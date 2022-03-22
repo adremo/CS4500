@@ -1,2 +1,2 @@
-# CS4500
+# CS4500 Group Project
 River Crossing Game
