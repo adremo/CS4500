@@ -1,11 +1,18 @@
 import pygame
+import tkinter as tk
+
+# Main window repeated
+root = tk.Tk()
+pygame.init()
+screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
+offset = 0.0
 
 
-class Button():
-    def __init__(self, x, y, image, scale):
-        width = image.get_width()
-        height = image.get_height()
-        self.image = pygame.transform.scale(image, (int(width * scale), int(height * scale)))
+class Button:
+    def __init__(self, x, y, image):
+        width = root.winfo_screenwidth()
+        height = root.winfo_screenheight()
+        self.image = pygame.transform.scale(image, (int(width * .11), int(height * .07)))
         self.rect = self.image.get_rect()
         self.rect.topleft = (x, y)
         self.clicked = False
@@ -13,13 +20,14 @@ class Button():
     def draw(self, surface):
         action = False
         pos = pygame.mouse.get_pos()
-        # print(pos)
-
+# Hover and Clicked
         if self.rect.collidepoint(pos):
+            width = root.winfo_screenwidth()
+            height = root.winfo_screenheight()
             menu_boat_image = pygame.image.load(r'Images/Menu_Boat.png').convert_alpha()
-            menu_boat_image = pygame.transform.scale(menu_boat_image, (150, 75))
+            menu_boat_image = pygame.transform.scale(menu_boat_image, (width * .08, height * .072))
             surface.blit(menu_boat_image, (self.rect.x * .8, self.rect.y))
-            # print("hover")
+
             if pygame.mouse.get_pressed()[0] == 1 and self.clicked == False:
                 print('clicked')
                 self.clicked = True

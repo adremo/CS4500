@@ -5,8 +5,7 @@ import math
 import menu_button
 from pygame.locals import *
 
-
-# Main
+# Main window
 root = tk.Tk()
 pygame.init()
 screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
@@ -35,21 +34,22 @@ amplitude = 5
 wave_offset_increment = 2.0
 base_y = water_box_start_y - (75 * amplitude)
 water_box_rect = Rect(water_start_x, water_box_start_y, water_width, water_box_height)
-title_location_x = root.winfo_screenwidth() * .235
-title_location_y = root.winfo_screenheight() * .08
-grass_location1_x = root.winfo_screenwidth() * .1
-grass_location1_y = root.winfo_screenheight() * .08
-grass_location2_x = root.winfo_screenwidth() * .27
-grass_location2_y = root.winfo_screenheight() * .46
-grass_location3_x = root.winfo_screenwidth() * .78
-grass_location3_y = root.winfo_screenheight() * .34
-menu_button_image_location_x = root.winfo_screenwidth() * .4255
-easy_button_image_location_y = root.winfo_screenheight() * .26
-hard_button_image_location_y = root.winfo_screenheight() * .33
-options_button_image_location_y = root.winfo_screenheight() * .4
-instructions_button_image_location_y = root.winfo_screenheight() * .465
-credits_button_image_location_y = root.winfo_screenheight() * .535
-
+title_location_x = screen_width * .22
+title_location_y = screen_height * .04
+title_width = screen_width * .59
+title_height = screen_height * .18
+grass_location1_x = screen_width * .1
+grass_location1_y = screen_height * .08
+grass_location2_x = screen_width * .27
+grass_location2_y = screen_height * .46
+grass_location3_x = screen_width * .78
+grass_location3_y = screen_height * .34
+menu_button_image_location_x = screen_width * .43
+easy_button_image_location_y = screen_height * .25
+hard_button_image_location_y = screen_height * .32
+options_button_image_location_y = screen_height * .39
+instructions_button_image_location_y = screen_height * .46
+credits_button_image_location_y = screen_height * .53
 
 
 def close():
@@ -69,6 +69,7 @@ def handleEvents():
 
 # Images
 title_image = pygame.image.load(r'Images/River_Crossing_Title.png').convert_alpha()
+title_image = pygame.transform.scale(title_image, (title_width, title_height))
 grass_image = pygame.image.load(r'Images/Grass.png').convert_alpha()
 easy_image = pygame.image.load(r'Images/Easy_Button.png').convert_alpha()
 hard_image = pygame.image.load(r'Images/Hard_Button.png').convert_alpha()
@@ -77,16 +78,14 @@ instructions_image = pygame.image.load(r'Images/Instructions_Button.png').conver
 credits_image = pygame.image.load(r'Images/Credit_Button.png').convert_alpha()
 
 # Buttons
-easy_button = menu_button.Button(menu_button_image_location_x, easy_button_image_location_y, easy_image, 1)
-hard_button = menu_button.Button(menu_button_image_location_x, hard_button_image_location_y, hard_image, 1)
-options_button = menu_button.Button(menu_button_image_location_x, options_button_image_location_y, options_image, 1)
-instructions_button = menu_button.Button(menu_button_image_location_x, instructions_button_image_location_y, instructions_image, 1)
-credits_button = menu_button.Button(menu_button_image_location_x, credits_button_image_location_y, credits_image, 1)
+easy_button = menu_button.Button(menu_button_image_location_x, easy_button_image_location_y, easy_image)
+hard_button = menu_button.Button(menu_button_image_location_x, hard_button_image_location_y, hard_image)
+options_button = menu_button.Button(menu_button_image_location_x, options_button_image_location_y, options_image)
+instructions_button = menu_button.Button(menu_button_image_location_x, instructions_button_image_location_y,
+                                         instructions_image)
+credits_button = menu_button.Button(menu_button_image_location_x, credits_button_image_location_y, credits_image)
 
-
-
-
-
+# The Game Loop
 run = True
 while run:
     handleEvents()
@@ -98,7 +97,6 @@ while run:
     screen.blit(grass_image, (grass_location1_x, grass_location1_y))
     screen.blit(grass_image, (grass_location2_x, grass_location2_y))
     screen.blit(grass_image, (grass_location3_x, grass_location3_y))
-    # screen.blit(easy_image, (easy_button_image_location_x, easy_button_image_location_y))
 
     if easy_button.draw(screen):
         print('easy')
@@ -124,7 +122,7 @@ while run:
         if event.type == pygame.QUIT:
             run = False
 
-# Running River
+    # Running River
     for i in range(water_width):
         pixelX = i + water_start_x
         rad = ((float(i) + offset) / 90.0) * two_pi
