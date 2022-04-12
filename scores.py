@@ -13,10 +13,15 @@
 # =========================================================================================================
 # Implementation: To use these functions, add this line to your import statements:
 # from scores import *
+# To use only a specific function, add this line to your import statements (Example shown with print_scores): 
+# from scores import print_scores
 #==========================================================================================================
 import json
 
-def load_scores(difficulty): # Return the raw scoring data as a dict, requires difficulty as a parameter
+def load_scores(difficulty): 
+    # Return the raw scoring data as a dict, requires difficulty as a parameter. Example Implementation:
+    # my_data_object = load_scores(difficulty="my_difficulty_choice")
+    # Difficulty must be specified as "easy" or "hard" or an error will be thrown and the function will return None
     if difficulty == "easy": # Loading the "easy mode" scores
         try:
             with open("./data/easy.json", "r", encoding="utf-8") as f:
@@ -42,7 +47,11 @@ def load_scores(difficulty): # Return the raw scoring data as a dict, requires d
         return None
 
 
-def save_score(difficulty, new_name, new_score): # Updates the list of high-scores
+def save_score(difficulty, new_name, new_score): 
+    # Updates the list of high-scores for the set difficulty with the given parameters. Example Implementation:
+    # save_score(difficulty="my_difficulty_choice, new_name="my_name_data", new_score="my_score_data")
+    # Difficulty must be specified as "easy" or "hard" or an error will be thrown and no data will be saved
+    # This function does not type check, so have care to pass your name as a string and your score as an int
     if difficulty == "easy":
         try:
             with open("./data/easy.json", "r+", encoding="utf-8") as f:
