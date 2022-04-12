@@ -24,7 +24,7 @@ def load_scores(difficulty):
     # Difficulty must be specified as "easy" or "hard" or an error will be thrown and the function will return None
     if difficulty == "easy": # Loading the "easy mode" scores
         try:
-            with open("./data/easy.json", "r", encoding="utf-8") as f:
+            with open("./easy.json", "r", encoding="utf-8") as f:
                 scores_easy = json.load(f)
             
         except FileNotFoundError: # Create temporary data storage if no local saved data is found
@@ -34,7 +34,7 @@ def load_scores(difficulty):
 
     elif difficulty == "hard": # Loading the "hard mode" scores
         try:
-            with open("./data/hard.json", "r", encoding="utf-8") as f:
+            with open("./hard.json", "r", encoding="utf-8") as f:
                 scores_hard = json.load(f)
             
         except FileNotFoundError: # Create temporary data storage if no local saved data is found
@@ -54,7 +54,7 @@ def save_score(difficulty, new_name, new_score):
     # This function does not type check, so have care to pass your name as a string and your score as an int
     if difficulty == "easy":
         try:
-            with open("./data/easy.json", "r+", encoding="utf-8") as f:
+            with open("./easy.json", "r+", encoding="utf-8") as f:
                 scores_easy = json.load(f)
 
                 new_data = {
@@ -76,12 +76,12 @@ def save_score(difficulty, new_name, new_score):
                 ]
             }
 
-            f = open("./data/easy.json", "w") # Create the new local storage file
+            f = open("./easy.json", "w") # Create the new local storage file
             json.dump(scores_easy, f, indent=4) # Save the data to the new json file
     
     elif difficulty == "hard":
         try:
-            with open("./data/hard.json", "r+", encoding="utf-8") as f:
+            with open("./hard.json", "r+", encoding="utf-8") as f:
                 scores_hard = json.load(f)
 
                 new_data = {
@@ -103,7 +103,7 @@ def save_score(difficulty, new_name, new_score):
                 ]
             }
 
-            f = open("./data/hard.json", "w") # Create the new local storage file
+            f = open("./hard.json", "w") # Create the new local storage file
             json.dump(scores_hard, f, indent=4) # Save the data to the new json file
     
     else:
@@ -113,7 +113,7 @@ def print_scores(): # Pretty print all sets of scores in dictionary format (for 
     print("===========================================================================")
     print("Loading Easy mode scores...\n")
     try:
-        with open("./data/easy.json", "r", encoding="utf-8") as f:
+        with open("./easy.json", "r", encoding="utf-8") as f:
             scores_easy = json.load(f)
             scores_formatted = json.dumps(scores_easy, indent=4) # Pretty formatting
             print(scores_formatted) # Print the "easy" mode scores if available
@@ -124,7 +124,7 @@ def print_scores(): # Pretty print all sets of scores in dictionary format (for 
 
     print("\nLoading Hard mode scores...\n")
     try:
-        with open("./data/hard.json", "r", encoding="utf-8") as f:
+        with open("./hard.json", "r", encoding="utf-8") as f:
             scores_hard = json.load(f)
             scores_formatted = json.dumps(scores_hard, indent=4) # Pretty formatting
             print(scores_formatted) # Print the "hard" mode scores if available
