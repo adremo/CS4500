@@ -3,6 +3,7 @@ import tkinter as tk
 
 # Main window repeated
 root = tk.Tk()
+root.withdraw()
 pygame.init()
 screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
 offset = 0.0
@@ -38,3 +39,32 @@ class Button:
         surface.blit(self.image, (self.rect.x, self.rect.y))
 
         return action
+    
+class Unit_Button:
+    def __init__(self, x, y, image):
+        width = root.winfo_screenwidth()
+        height = root.winfo_screenheight()
+        self.image = pygame.transform.scale(image, (int(width * .04), int(height * .06)))
+        self.rect = self.image.get_rect()
+        self.rect.topleft = (x, y)
+        self.clicked = False
+        
+    def draw_unit(self, surface):
+        action = False
+        pos = pygame.mouse.get_pos()
+
+        if self.rect.collidepoint(pos):
+            width = root.winfo_screenwidth()
+            height = root.winfo_screenheight()
+
+            if pygame.mouse.get_pressed()[0] == 1 and self.clicked == False:
+                print('clicked')
+                self.clicked = True
+                action = True
+        if pygame.mouse.get_pressed()[0] == 0:
+            self.clicked = False
+
+        surface.blit(self.image, (self.rect.x, self.rect.y))
+
+        return action
+
