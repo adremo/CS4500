@@ -4,9 +4,11 @@ import pygame
 import math
 import menu_button
 from pygame.locals import *
+from run_simulation import run_simulation
 
 # Main window
 root = tk.Tk()
+root.withdraw()
 pygame.init()
 screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
 offset = 0.0
@@ -58,13 +60,13 @@ def close():
 
 
 def handleEvents():
-    for event2 in pygame.event.get():
-        if event2.type == QUIT:
-            return
-        elif event2.type == KEYDOWN:
-            if event2.key == K_ESCAPE:
-                pygame.quit()
-                return
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            running = False
+        elif event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_ESCAPE:
+                sys.exit() # not sure how necessary/bad this is but I had to use it for game to close properly
+                running = False
 
 
 # Images
@@ -85,7 +87,7 @@ instructions_button = menu_button.Button(menu_button_image_location_x, instructi
                                          instructions_image)
 credits_button = menu_button.Button(menu_button_image_location_x, credits_button_image_location_y, credits_image)
 
-# The Game Loop
+# The Main Menu Loop
 run = True
 while run:
     handleEvents()
@@ -99,8 +101,8 @@ while run:
     screen.blit(grass_image, (grass_location3_x, grass_location3_y))
 
     if easy_button.draw(screen):
-        print('easy')
-        run = False
+        turn_count = run_simulation(0)
+        print(turn_count)
 
     if hard_button.draw(screen):
         print('easy')
@@ -136,7 +138,6 @@ while run:
     if offset > 90.0:
         offset -= 90.0
 
-    pygame.display.flip()
     pygame.time.wait(10)
     pygame.display.update()
 
