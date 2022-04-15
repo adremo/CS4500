@@ -38,16 +38,18 @@ medium_graph = {
 white = (255, 255, 255)
 green = (82, 216, 50)
 blue = (0, 0, 200)
+red = (240, 0, 0)
 
-font = pygame.font.Font('freesansbold.ttf', 32)
+font = pygame.font.Font('freesansbold.ttf', 36)
+small_font = pygame.font.Font('freesansbold.ttf', 24)
 
 # Screen coordinates
 screen_width = screen.get_width()
 screen_height = screen.get_height()
 left_side_x = screen_width * 0.25
 right_side_x = screen_width * 0.75
-boat_left_x = screen_width * 0.3
-boat_right_x = screen_width * 0.58
+boat_left_x = screen_width * 0.34
+boat_right_x = screen_width * 0.68
 boat_y = screen_height * 0.55
 
 # load images
@@ -70,10 +72,13 @@ cabbage_button_right = menu_button.Unit_Button(right_side_x, screen_height * 0.3
 fox_button_boat = menu_button.Unit_Button(screen_width * 0.5, screen_height * 0.28, fox_icon)
 rabbit_button_boat = menu_button.Unit_Button(screen_width * 0.5, screen_height * 0.36, rabbit_icon)
 cabbage_button_boat = menu_button.Unit_Button(screen_width * 0.5, screen_height * 0.44, cabbage_icon)
-travel_button = menu_button.Button(screen_width * 0.5, screen_height * 0.9, arrow_right_image)
+travel_button_left = menu_button.Button(screen_width * 0.5, screen_height * 0.85, arrow_right_image)
+travel_button_right = menu_button.Button(screen_width * 0.5, screen_height * 0.85, arrow_left_image)
 
-travel_button.image = pygame.transform.scale(travel_button.image, (int(screen_width * .04), int(screen_height * .06)))
-river_image = pygame.transform.scale(river_image, (screen_width * 0.3, screen_height))
+
+travel_button_left.image = pygame.transform.scale(travel_button_left.image, (int(screen_width * .08), int(screen_height * .12)))
+travel_button_right.image = pygame.transform.scale(travel_button_right.image, (int(screen_width * .08), int(screen_height * .12)))
+river_image = pygame.transform.scale(river_image, (screen_width * 0.42, screen_height))
 left_side_boat_image = pygame.transform.scale(left_side_boat_image, (screen_width * 0.18, screen_height * 0.13))
 right_side_boat_image = pygame.transform.scale(right_side_boat_image, (screen_width * 0.18, screen_height * 0.13))
 
@@ -100,7 +105,7 @@ unit_buttons_boat = {
 class boat_class:
   def __init__(self, size, side):
     self.size = size
-    self.side = side
+    self.side = side # 0 = left side of river, 1 = right side
     self.units = []
     
 class left_side_class:
@@ -114,19 +119,64 @@ class right_side_class:
     self.units = []
 
 # need to add more UI elements, and also text messages for when game events occur, also sound
-def display_UI(turn_count, boat_size):
+def display_UI(turn_count, boat_size, unit_graph, current_conflicts):
+    # Display current number of turns/trips used
     turn_text = "Trips Taken: " + str(turn_count)
     turns_display = font.render(turn_text, True, blue, green)
     turns_rect = turns_display.get_rect()
     turns_rect.center = (screen_width * 0.1, screen_height * 0.1)
     screen.blit(turns_display, turns_rect)
     
+    # Display max capacity of the boat
     capacity_text = "Boat Capacity: " + str(boat_size)
     capacity_display = font.render(capacity_text, True, white)
-    capacity_rect = turns_display.get_rect()
+    capacity_rect = capacity_display.get_rect()
     capacity_rect.center = (screen_width * 0.5, screen_height * 0.1)
     screen.blit(capacity_display, capacity_rect)
     
+    # Display label for travel button
+    travel_text = "Send Boat Across"
+    travel_display = font.render(travel_text, True, red)
+    travel_rect = travel_display.get_rect()
+    travel_rect.center = (screen_width * 0.54, screen_height * 0.97)
+    screen.blit(travel_display, travel_rect)
+    
+    # Display conflicts on left side of screen    
+    units = []
+    for unit in unit_graph:
+        units.append(unit)
+        
+    conflict_count = 0
+    
+    for unit in units:
+        for food in unit_graph[unit]:
+            if units.__contains__(food):
+                conflict_count += 1
+                conflict = (unit, food)
+                conflict_text = str(unit) + " eats " + str(food)
+
+                # If the conflict has been resolved by placing a unit into the boat, strikethrough and different color text
+                if current_conflicts.__contains__(conflict) == False:
+                    conflict_display = small_font.render(conflict_text, True, blue, green)
+                    conflict_rect = conflict_display.get_rect()
+                    conflict_rect.center = (screen_width * 0.09, screen_height * (0.18 + (conflict_count / 45)))
+                else:
+                    conflict_display = small_font.render(conflict_text, True, red, green)
+                    conflict_rect = conflict_display.get_rect()
+                    conflict_rect.center = (screen_width * 0.11, screen_height * (0.18 + (conflict_count / 45)))
+
+                screen.blit(conflict_display, conflict_rect)
+                
+                if current_conflicts.__contains__(conflict) == False:
+                    pygame.draw.lines(screen, blue, True, [(conflict_rect.left, conflict_rect.centery), (conflict_rect.right, conflict_rect.centery)], 3)
+    
+    conflict_title = "Conflicts: " + str(len(current_conflicts))
+    conflict_title_display = font.render(conflict_title, True, blue)
+    title_rect = conflict_title_display.get_rect()
+    title_rect.center = (screen_width * 0.09, screen_height * 0.17)
+    screen.blit(conflict_title_display, title_rect)
+    
+    # Display the boat on the screen based on turn
     if turn_count % 2 == 0:
         screen.blit(left_side_boat_image, (boat_left_x, boat_y))
     else:
@@ -141,41 +191,33 @@ def handle_events():
                 sys.exit()
                 running = False
         
-# Returns true if there are NO unit conflicts on boat's current side of the river (not in boat)        
+# Returns list of current conflicts found on the side that boat is on (which animals CAN eat something after boat leaves shore)
 def check_unit_conflicts(left_side, right_side, boat, unit_graph):
     if boat.side == 0:
         unit_list = left_side.units
     else:
         unit_list = right_side.units
         
-    conflicts = []
+    current_conflicts = []
     for unit in unit_list:
         for food in unit_graph[unit]:
             if unit_list.__contains__(food):
                 conflict = (unit, food)
-                conflicts.append(conflict)
+                current_conflicts.append(conflict)
 
-    if len(conflicts) == 0:
-        return False
-    else:
-        print("Conflicts present on shore: " + str(conflicts))
-        return True
+    return current_conflicts
 
 # Game simulation function, contains main game simulation loop, returns turns used after game is won
-def run_simulation(difficulty_settings):
-    # Initial setup, graphs and boat sizes can be changed later on
-    if difficulty_settings == 0:
-        # these should be changed later to be equal to whatever input boat size is
-        boat_size = 1
+def run_simulation(difficulty_setting, boat_size):
+    # Initial setup, graphs can be changed later on when we get different graph stuff in
+    if difficulty_setting == 0:
         unit_graph = easy_graph
-    elif difficulty_settings == 1:  # this doesn't work yet, need to add more images/buttons/etc for units within the larger graph(s)
-        boat_size = 3
+    elif difficulty_setting == 1:  # this doesn't work yet, need to add more images/buttons/etc for units within the larger graph(s)
         unit_graph = medium_graph
-    elif difficulty_settings == 2:
-        boat_size = 3
+    elif difficulty_setting == 2:
         #need hard graph, and later can use randomized graphs
         unit_graph = medium_graph
-        
+    
     left_side = left_side_class(len(unit_graph))
     right_side = right_side_class(len(unit_graph))
     boat = boat_class(boat_size, 0)
@@ -185,15 +227,18 @@ def run_simulation(difficulty_settings):
     for unit in unit_graph:
         left_side.units.append(unit)
     
-    # simulation loop
+    # Main Simulation loop: runs until win condition is met(# of units on right side of river is equal to # in units graph)
     run = True
     while run:
         screen.fill(green)
         screen.blit(river_image, (screen_width * 0.37, 0))
 
         handle_events()
-        display_UI(turn_count, boat.size)
+        
+        current_conflicts = check_unit_conflicts(left_side, right_side, boat, unit_graph)
+        display_UI(turn_count, boat.size, unit_graph, current_conflicts)
 
+        # Main logic for moving units around based on graphical user input, before attempting to cross river
         for unit in unit_graph.keys():
             if left_side.units.__contains__(unit):
                 if unit_buttons_left[unit].draw_unit(screen):
@@ -212,31 +257,32 @@ def run_simulation(difficulty_settings):
                         left_side.units.append(unit)
                     else:
                         right_side.units.append(unit) 
-                
-        if travel_button.draw(screen):
-            if check_unit_conflicts(left_side, right_side, boat, unit_graph):
-                print("Unit conflict present, cannot transfer boat")
-            else:
+
+        if travel_button_left.draw(screen):
+            # if travel button on bottom is pressed, check to see if there are any animals on boat's current side which will eat each other when boat/farmer leaves
+            current_conflicts = check_unit_conflicts(left_side, right_side, boat, unit_graph)
+            if len(current_conflicts) == 0:
                 if boat.side == 0:
                     print("Transferring units in boat(" + str(boat.units) + ") to right side of the river")
                     boat.side = 1
                     for u in boat.units:
                         right_side.units.append(u)
                         boat.units.remove(u)
-                else:
+                elif boat.side == 1:
                     print("Transferring units in boat(" + str(boat.units) + ") to left side of the river")
                     boat.side = 0
                     for u in boat.units:
                         left_side.units.append(u)
                         boat.units.remove(u)
-                    
                 turn_count += 1
-        
+            else:
+                print("Unit conflict present, cannot transfer boat")
+                
         if len(right_side.units) == win_condition:
             print("All units have reached right side of river. You win!")
             run = False
 
-        pygame.time.wait(10)
+        pygame.time.wait(15)
         pygame.display.update()
         
     return turn_count

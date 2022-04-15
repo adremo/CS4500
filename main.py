@@ -4,7 +4,7 @@ import pygame
 import math
 import menu_button
 from pygame.locals import *
-from run_simulation import run_simulation
+from simulation import run_simulation
 
 # Main window
 root = tk.Tk()
@@ -101,7 +101,9 @@ while run:
     screen.blit(grass_image, (grass_location3_x, grass_location3_y))
 
     if easy_button.draw(screen):
-        turn_count = run_simulation(0)
+        # calling start of simulation with difficulty = 0 (easy), and boat size/capacity = 1 
+        # (in case of easy graph that's the minimum size to solve puzzle)
+        turn_count = run_simulation(0, 1)
         print(turn_count)
 
     if hard_button.draw(screen):
