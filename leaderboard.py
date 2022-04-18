@@ -144,8 +144,8 @@ def format_leaderboard():
 
             # Determine score field data
             try:
-                raw_score_data = scores_easy["scores"][x][0]["score"]
-                score_data_easy = str(raw_score_data)
+                raw_score_data_easy = scores_easy["scores"][x][0]["score"]
+                score_data_easy = str(raw_score_data_easy)
             
             except IndexError:
                 # To handle out of range errors when there are not enough data entries to display
@@ -180,6 +180,35 @@ def format_leaderboard():
             rank_rect_hard.center = ((screen_width/4) - 300 + x_offset, 310 + (x * y_offset))
             screen.blit(rank_object_hard, rank_rect_hard)
 
+            # Determine name field data
+            try:
+                name_data_hard = scores_hard["scores"][x][0]["name"]
+            
+            except IndexError:
+                # To handle out of range errors when there are not enough data entries to display
+                name_data_hard = ""
+
+            # Render name data
+            name_object_hard = entry_font.render(name_data_hard, True, TEXT_COLOR, green)
+            name_rect_hard = name_object_hard.get_rect()
+            name_rect_hard.center = ((screen_width/4) + x_offset, 310 + (x * y_offset))
+            screen.blit(name_object_hard, name_rect_hard)
+
+            # Determine score field data
+            try:
+                raw_score_data_hard = scores_hard["scores"][x][0]["score"]
+                score_data_hard = str(raw_score_data_hard)
+            
+            except IndexError:
+                # To handle out of range errors when there are not enough data entries to display
+                score_data_hard = ""
+
+            # Render score data
+            score_object_hard = entry_font.render(score_data_hard, True, TEXT_COLOR, green)
+            score_rect_hard = score_object_hard.get_rect()
+            score_rect_hard.center = ((screen_width/4) + 300 + x_offset, 310 + (x * y_offset))
+            screen.blit(score_object_hard, score_rect_hard)
+
 
 def display_leaderboard():
     # Main loop that controls the leaderboard page
@@ -200,13 +229,6 @@ def display_leaderboard():
         pygame.display.update()
     
     return
-
-def create_entry(name, score, font, color, surface, x, y, x_offset, y_offset):
-    # Generates a single entry on the leaderboard
-    name_entry = font.render(name, 1, color)
-    score_entry = font.render(score, 1, color)
-    name_rect = name_entry.get_rect()
-    score_rect = score_entry
 
 display_leaderboard()
 pygame.quit()
