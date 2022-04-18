@@ -28,7 +28,7 @@ def load_scores(difficulty):
                 scores_easy = json.load(f)
             
         except FileNotFoundError: # Create temporary data storage if no local saved data is found
-            scores_easy = []
+            scores_easy = {}
     
         return scores_easy
 
@@ -38,7 +38,7 @@ def load_scores(difficulty):
                 scores_hard = json.load(f)
             
         except FileNotFoundError: # Create temporary data storage if no local saved data is found
-            scores_hard = []
+            scores_hard = {}
         
         return scores_hard
     
@@ -69,10 +69,12 @@ def save_score(difficulty, new_name, new_score):
         except FileNotFoundError: # Create temporary data storage if no local saved data is found
             scores_easy = {
                 "scores": [
-                    {
+                    [
+                        {
                         "name": new_name,
                         "score": new_score
-                    },
+                        },
+                    ]
                 ]
             }
 
@@ -96,10 +98,12 @@ def save_score(difficulty, new_name, new_score):
         except FileNotFoundError: # Create temporary data storage if no local saved data is found
             scores_hard = {
                 "scores": [
-                    {
-                        "name": new_name,
-                        "score": new_score
-                    },
+                    [
+                        {
+                            "name": new_name,
+                            "score": new_score
+                        },
+                    ]
                 ]
             }
 
