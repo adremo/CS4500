@@ -104,9 +104,7 @@ def format_leaderboard():
     scores_easy = load_scores(difficulty="easy")
     scores_hard = load_scores(difficulty="hard")
 
-    # Sample Entry Implementation
-    #entry_text = "#1                              " + name_data + "                              " + score_data
-
+    # Render leader data onto the screen
     if scores_easy == None:
         # Display that there are no saved high scores
         pass
@@ -115,44 +113,73 @@ def format_leaderboard():
         # Format and display the high scores
         for x in range (0, MAX_ENTRIES): # Alternating the zone colors
             if x % 2 == 0:
-                zone_color = black
+                zone_color_easy = black
             else:
-                zone_color = brown
+                zone_color_easy = brown
             
             # Draw the entry zones
-            entry_zone = Rect(100, starting_offset + (x * y_offset), entry_x_offset_easy, 45)
-            pygame.draw.rect(screen, zone_color, entry_zone)
+            entry_zone_easy = Rect(100, starting_offset + (x * y_offset), entry_x_offset_easy, 45)
+            pygame.draw.rect(screen, zone_color_easy, entry_zone_easy)
 
             # Render rank data
-            rank_text = "#" + str(x + 1)
-            rank_object = entry_font.render(rank_text, True, TEXT_COLOR, zone_color)
-            rank_rect = rank_object.get_rect()
-            rank_rect.center = ((screen_width/4) - 300, 310 + (x * y_offset))
-            screen.blit(rank_object, rank_rect)
+            rank_text_easy = "#" + str(x + 1)
+            rank_object_easy = entry_font.render(rank_text_easy, True, TEXT_COLOR, zone_color_easy)
+            rank_rect_easy = rank_object_easy.get_rect()
+            rank_rect_easy.center = ((screen_width/4) - 300, 310 + (x * y_offset))
+            screen.blit(rank_object_easy, rank_rect_easy)
 
             # Determine name field data
-            index = int(x)
-            name_data = scores_easy["scores"][1][0]["name"]
+            try:
+                name_data_easy = scores_easy["scores"][x][0]["name"]
+            
+            except IndexError:
+                # To handle out of range errors when there are not enough data entries to display
+                name_data_easy = ""
 
             # Render name data
-            name_object = entry_font.render(name_data, True, TEXT_COLOR, blue)
-            name_rect = name_object.get_rect()
-            name_rect.center = ((screen_width/4), 310 + (x * y_offset))
-            screen.blit(name_object, name_rect)
+            name_object_easy = entry_font.render(name_data_easy, True, TEXT_COLOR, blue)
+            name_rect_easy = name_object_easy.get_rect()
+            name_rect_easy.center = ((screen_width/4), 310 + (x * y_offset))
+            screen.blit(name_object_easy, name_rect_easy)
 
             # Determine score field data
-            #score_data = str(scores_easy["scores"][0]["score"])
-            score_data = "placeholder"
+            try:
+                raw_score_data = scores_easy["scores"][x][0]["score"]
+                score_data_easy = str(raw_score_data)
+            
+            except IndexError:
+                # To handle out of range errors when there are not enough data entries to display
+                score_data_easy = ""
 
             # Render score data
-            score_object = entry_font.render(score_data, True, TEXT_COLOR, blue)
-            score_rect = score_object.get_rect()
-            score_rect.center = ((screen_width/4) + 300, 310 + (x * y_offset))
-            screen.blit(score_object, score_rect)
+            score_object_easy = entry_font.render(score_data_easy, True, TEXT_COLOR, blue)
+            score_rect_easy = score_object_easy.get_rect()
+            score_rect_easy.center = ((screen_width/4) + 300, 310 + (x * y_offset))
+            screen.blit(score_object_easy, score_rect_easy)
 
     if scores_hard == None:
         # Display that there are no saved high scores
         pass
+
+    else:
+        # Format and display the high scores
+        for x in range (0, MAX_ENTRIES): # Alternating the zone colors
+            if x % 2 == 0:
+                zone_color_hard = black
+            else:
+                zone_color_hard = light_blue
+        
+            # Draw the entry zones
+            entry_zone_hard = Rect(100 + x_offset, starting_offset + (x * y_offset), entry_x_offset_hard, 45)
+            pygame.draw.rect(screen, zone_color_hard, entry_zone_hard)
+
+            # Render rank data
+            rank_text_hard = "#" + str(x + 1)
+            rank_object_hard = entry_font.render(rank_text_hard, True, TEXT_COLOR, zone_color_hard)
+            rank_rect_hard = rank_object_hard.get_rect()
+            rank_rect_hard.center = ((screen_width/4) - 300 + x_offset, 310 + (x * y_offset))
+            screen.blit(rank_object_hard, rank_rect_hard)
+
 
 def display_leaderboard():
     # Main loop that controls the leaderboard page
