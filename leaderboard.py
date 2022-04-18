@@ -25,7 +25,7 @@ pygame.init()
 screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
 offset = 0.0
 
-def format_leaderboard():
+def format_leaderboard(root, screen):
     # Setting up leaderboard appearance
     BACKGROUND_COLOR = Color(80, 80, 245)
     EASY_BACKGROUND_COLOR = Color(82, 216, 50)
@@ -229,8 +229,9 @@ def format_leaderboard():
             screen.blit(score_object_hard, score_rect_hard)
 
 
-def display_leaderboard():
+def display_leaderboard(root, screen):
     # Main loop that controls the leaderboard page
+    # Takes the root and screen from the main file as parameters
     running = True
     FPS = 60 # Locks the FPS on the screen to this value
     clock = pygame.time.Clock()
@@ -244,12 +245,11 @@ def display_leaderboard():
                 if event.key == K_ESCAPE:
                     running = False
         
-        format_leaderboard()
+        format_leaderboard(root, screen)
         pygame.display.update()
     
     return
 
-display_leaderboard()
 pygame.quit()
 
     

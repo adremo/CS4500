@@ -4,6 +4,7 @@ import pygame
 import math
 import menu_button
 from pygame.locals import *
+from leaderboard import display_leaderboard
 from simulation import run_simulation
 
 # Main window
@@ -119,8 +120,7 @@ while run:
         run = False
 
     if credits_button.draw(screen):
-        print('easy')
-        run = False
+        display_leaderboard(root=root, screen=screen)
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
