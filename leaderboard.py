@@ -12,7 +12,6 @@
 # Pygame Documentation: https://www.pygame.org/docs/ 
 # Geeks-for-Geeks Tutorial: https://www.geeksforgeeks.org/python-display-text-to-pygame-window/ 
 # =========================================================================================================
-import json
 import pygame
 import sys
 import tkinter as tk
@@ -26,7 +25,7 @@ pygame.init()
 screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
 offset = 0.0
 
-def format_leaderboard():
+def format_leaderboard(root, screen):
     # Setting up leaderboard appearance
     BACKGROUND_COLOR = Color(80, 80, 245)
     EASY_BACKGROUND_COLOR = Color(82, 216, 50)
@@ -104,10 +103,20 @@ def format_leaderboard():
     scores_easy = load_scores(difficulty="easy")
     scores_hard = load_scores(difficulty="hard")
 
-    # Render leader data onto the screen
-    if scores_easy == None:
+    # Render leaderboard data onto the screen
+    if len(scores_easy) == 0:
         # Display that there are no saved high scores
-        pass
+        message_text_easy = "No data"
+        
+        # Draw surface
+        easy_message_zone = Rect(100, starting_offset, entry_x_offset_easy, 700)
+        pygame.draw.rect(screen, black, easy_message_zone)
+
+        # Display message
+        message_object_easy = subheader_font.render(message_text_easy, True, TEXT_COLOR, green)
+        message_rect_easy = message_object_easy.get_rect()
+        message_rect_easy.center = ((screen_width/4), 600)
+        screen.blit(message_object_easy, message_rect_easy)
 
     else:
         # Format and display the high scores
@@ -157,9 +166,19 @@ def format_leaderboard():
             score_rect_easy.center = ((screen_width/4) + 300, 310 + (x * y_offset))
             screen.blit(score_object_easy, score_rect_easy)
 
-    if scores_hard == None:
+    if len(scores_hard) == 0:
         # Display that there are no saved high scores
-        pass
+        message_text_hard = "No data"
+        
+        # Draw surface
+        hard_message_zone = Rect(100 + x_offset, starting_offset, entry_x_offset_hard, 700)
+        pygame.draw.rect(screen, black, hard_message_zone)
+
+        # Display message
+        message_object_hard = subheader_font.render(message_text_hard, True, TEXT_COLOR, green)
+        message_rect_hard = message_object_hard.get_rect()
+        message_rect_hard.center = ((screen_width/4) + x_offset, 600)
+        screen.blit(message_object_hard, message_rect_hard)
 
     else:
         # Format and display the high scores
@@ -210,8 +229,9 @@ def format_leaderboard():
             screen.blit(score_object_hard, score_rect_hard)
 
 
-def display_leaderboard():
+def display_leaderboard(root, screen):
     # Main loop that controls the leaderboard page
+    # When importing from another file, must import the game's root and screen to use
     running = True
     FPS = 60 # Locks the FPS on the screen to this value
     clock = pygame.time.Clock()
@@ -225,12 +245,12 @@ def display_leaderboard():
                 if event.key == K_ESCAPE:
                     running = False
         
-        format_leaderboard()
+        format_leaderboard(root, screen)
         pygame.display.update()
     
     return
 
-display_leaderboard()
+display_leaderboard(root, screen)
 pygame.quit()
 
     
