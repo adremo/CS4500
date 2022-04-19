@@ -1,9 +1,9 @@
 # As of right now the user feedback in terms of whether boat can/cannot cross, 
 # when boat is crossing and with what, and when game is won, are all in console
 #
-# To do: Sounds, adding support for more than 1 game graph, create and include algorithm for fastest solution
+# To do: Adding support for more than 1 game graph
 #        Also a ton of UI/graphics stuff like swapping bottom arrow left/right, adding labels, arranging units
-#        better, labeling things, highlighting which units are in conflict, and animations.
+#        better, highlighting which units are in conflict, and animations.
 
 import sys
 import pygame
@@ -11,7 +11,7 @@ import tkinter as tk
 import menu_button
 import scores
 
-#set up screen again
+#set up screen
 root = tk.Tk()
 root.withdraw()
 pygame.init()
@@ -40,8 +40,29 @@ green = (82, 216, 50)
 blue = (0, 0, 200)
 red = (240, 0, 0)
 
+# Fonts
 font = pygame.font.Font('freesansbold.ttf', 36)
 small_font = pygame.font.Font('freesansbold.ttf', 24)
+
+# Sounds
+click_sound = pygame.mixer.Sound(r'Sounds/click_sound.mp3')
+pygame.mixer.Sound.set_volume(click_sound, 0.5)
+victory_sound = pygame.mixer.Sound(r'Sounds/victory_sound.mp3')
+pygame.mixer.Sound.set_volume(victory_sound, 0.8)
+cancel_sound = pygame.mixer.Sound(r'Sounds/cancel_sound.mp3')
+pygame.mixer.Sound.set_volume(cancel_sound, 0.5)
+water_sound = pygame.mixer.Sound(r'Sounds/water_sound.mp3')
+
+
+# Images
+fox_icon = pygame.image.load(r'Images/fox_icon.png')
+rabbit_icon = pygame.image.load(r'Images/rabbit_icon.png')
+cabbage_icon = pygame.image.load(r'Images/cabbage_icon.png')
+arrow_right_image = pygame.image.load(r'Images/arrow_right_icon.png')
+arrow_left_image = pygame.image.load(r'Images/arrow_left_icon.png')
+left_side_boat_image = pygame.image.load(r'Images/left_side_boat.png')
+right_side_boat_image = pygame.image.load(r'Images/right_side_boat.png')
+river_image = pygame.image.load(r'Images/river_image.png')
 
 # Screen coordinates
 screen_width = screen.get_width()
@@ -51,16 +72,6 @@ right_side_x = screen_width * 0.75
 boat_left_x = screen_width * 0.34
 boat_right_x = screen_width * 0.68
 boat_y = screen_height * 0.55
-
-# load images
-fox_icon = pygame.image.load(r'Images/fox_icon.png')
-rabbit_icon = pygame.image.load(r'Images/rabbit_icon.png')
-cabbage_icon = pygame.image.load(r'Images/cabbage_icon.png')
-arrow_right_image = pygame.image.load(r'Images/arrow_right_icon.png')
-arrow_left_image = pygame.image.load(r'Images/arrow_left_icon.png')
-left_side_boat_image = pygame.image.load(r'Images/left_side_boat.png')
-right_side_boat_image = pygame.image.load(r'Images/right_side_boat.png')
-river_image = pygame.image.load(r'Images/river_image.png')
 
 # Generate buttons
 fox_button_left = menu_button.Unit_Button(left_side_x, screen_height * 0.18, fox_icon)
@@ -155,7 +166,7 @@ def display_UI(turn_count, boat_size, unit_graph, current_conflicts):
                 conflict = (unit, food)
                 conflict_text = str(unit) + " eats " + str(food)
 
-                # If the conflict has been resolved by placing a unit into the boat, strikethrough and different color text
+                # If the conflict has been resolved by placing a unit into the boat, generate strikethrough and different color text
                 if current_conflicts.__contains__(conflict) == False:
                     conflict_display = small_font.render(conflict_text, True, blue, green)
                     conflict_rect = conflict_display.get_rect()
@@ -217,7 +228,11 @@ def run_simulation(difficulty_setting, boat_size):
     elif difficulty_setting == 2:
         #need hard graph, and later can use randomized graphs
         unit_graph = medium_graph
+        
+    # Play water sound until game is complete
+    pygame.mixer.Sound.play(water_sound, -1)
     
+    # Initialize variables and objects
     left_side = left_side_class(len(unit_graph))
     right_side = right_side_class(len(unit_graph))
     boat = boat_class(boat_size, 0)
@@ -243,15 +258,18 @@ def run_simulation(difficulty_setting, boat_size):
             if left_side.units.__contains__(unit):
                 if unit_buttons_left[unit].draw_unit(screen):
                     if len(boat.units) < boat.size and boat.side == 0:
+                        pygame.mixer.Sound.play(click_sound)
                         left_side.units.remove(unit)
                         boat.units.append(unit)
             elif right_side.units.__contains__(unit):
                 if unit_buttons_right[unit].draw_unit(screen):
                     if len(boat.units) < boat.size and boat.side == 1:
+                        pygame.mixer.Sound.play(click_sound)
                         right_side.units.remove(unit)
                         boat.units.append(unit)
             elif boat.units.__contains__(unit):
                 if unit_buttons_boat[unit].draw_unit(screen):
+                    pygame.mixer.Sound.play(click_sound)
                     boat.units.remove(unit)
                     if boat.side == 0:
                         left_side.units.append(unit)
@@ -262,6 +280,8 @@ def run_simulation(difficulty_setting, boat_size):
             # if travel button on bottom is pressed, check to see if there are any animals on boat's current side which will eat each other when boat/farmer leaves
             current_conflicts = check_unit_conflicts(left_side, right_side, boat, unit_graph)
             if len(current_conflicts) == 0:
+                pygame.mixer.Sound.play(click_sound)
+                
                 if boat.side == 0:
                     print("Transferring units in boat(" + str(boat.units) + ") to right side of the river")
                     boat.side = 1
@@ -276,10 +296,14 @@ def run_simulation(difficulty_setting, boat_size):
                         boat.units.remove(u)
                 turn_count += 1
             else:
+                pygame.mixer.Sound.play(cancel_sound)
                 print("Unit conflict present, cannot transfer boat")
                 
         if len(right_side.units) == win_condition:
             print("All units have reached right side of river. You win!")
+            pygame.mixer.Sound.stop(water_sound)
+            pygame.mixer.Sound.play(victory_sound)
+
             run = False
 
         pygame.time.wait(15)

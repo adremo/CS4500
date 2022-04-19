@@ -70,6 +70,14 @@ def handleEvents():
                 sys.exit() # not sure how necessary/bad this is but I had to use it for game to close properly
                 running = False
 
+# Sounds
+# Game Music, loop by setting -1 as the .play() 'loops' param
+pygame.mixer.music.load(r'Sounds/game_music.mp3')
+pygame.mixer.music.set_volume(0.7)
+pygame.mixer.music.play(-1)
+# Menu Noises
+click_sound = pygame.mixer.Sound(r'Sounds/click_sound.mp3')
+pygame.mixer.Sound.set_volume(click_sound, 0.5)
 
 # Images
 title_image = pygame.image.load(r'Images/River_Crossing_Title.png').convert_alpha()
@@ -103,24 +111,29 @@ while run:
     screen.blit(grass_image, (grass_location3_x, grass_location3_y))
 
     if easy_button.draw(screen):
+        pygame.mixer.Sound.play(click_sound)
         # calling start of simulation with difficulty = 0 (easy), and boat size/capacity = 1 
-        # (in case of easy graph that's the minimum size to solve puzzle)
+        # Need to change the difficulty setting to game graph input
         turn_count = run_simulation(0, 1)
-        print(turn_count)
+        print("Game won, turns used: " + str(turn_count))
 
     if hard_button.draw(screen):
+        pygame.mixer.Sound.play(click_sound)
         print('easy')
         run = False
 
     if options_button.draw(screen):
+        pygame.mixer.Sound.play(click_sound)
         print('easy')
         run = False
 
     if instructions_button.draw(screen):
+        pygame.mixer.Sound.play(click_sound)
         print('easy')
         run = False
 
     if credits_button.draw(screen):
+        pygame.mixer.Sound.play(click_sound)
         display_leaderboard(root=root, screen=screen)
 
     for event in pygame.event.get():
