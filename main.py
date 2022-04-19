@@ -1,3 +1,10 @@
+# Sound Sources: 
+# game_music: https://freesound.org/people/FoolBoyMedia/sounds/257997/
+# click_sound: https://freesound.org/people/brandondelehoy/sounds/333428/
+# victory_sound: https://freesound.org/people/Eponn/sounds/619832/
+# cancel_sound: https://freesound.org/people/plasterbrain/sounds/423167/
+# water sound: https://freesound.org/people/thorvandahl/sounds/184200/
+
 import tkinter as tk
 import sys
 import pygame
