@@ -3,6 +3,7 @@ import sys
 import pygame
 import math
 import menu_button
+import scores
 from pygame.locals import *
 from leaderboard import display_leaderboard
 from simulation import run_simulation

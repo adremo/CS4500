@@ -10,13 +10,15 @@
 # =========================================================================================================
 # External Sources used: Python 3.10.4 Documentation: https://docs.python.org/3/library/json.html
 # Pygame Documentation: https://www.pygame.org/docs/ 
-# Geeks-for-Geeks Tutorial: https://www.geeksforgeeks.org/python-display-text-to-pygame-window/ 
+# Geeks-for-Geeks Tutorials: https://www.geeksforgeeks.org/python-display-text-to-pygame-window/
+# https://www.geeksforgeeks.org/python-add-new-keys-to-a-dictionary/ 
+# Dictionary Sorting with Lambda: https://www.youtube.com/watch?v=6uih8-Cc7Cg&ab_channel=JieJenn  
 # =========================================================================================================
 import pygame
 import sys
 import tkinter as tk
 from pygame.locals import *
-from scores import load_scores
+from scores import scores_setup, load_scores
 
 # Setting up window
 root = tk.Tk()
@@ -119,6 +121,22 @@ def format_leaderboard(root, screen):
         screen.blit(message_object_easy, message_rect_easy)
 
     else:
+        # Create new unsorted dictionaries from the data
+        scores_easy_unsorted = scores_setup()
+
+        for x in range(0, len(scores_easy["scores"])):
+            scores_easy_unsorted.add(scores_easy["scores"][x][0]["name"], scores_easy["scores"][x][0]["score"])
+        
+        # Sort the new dictionaries
+        scores_easy_sorted = {k: v for k, v in sorted(scores_easy_unsorted.items(), key=lambda v: v[1])}
+
+        name_data_easy_list = []
+        score_data_easy_list = []
+
+        for k, v in scores_easy_sorted.items():
+            name_data_easy_list.append(k)
+            score_data_easy_list.append(v)
+
         # Format and display the high scores
         for x in range (0, MAX_ENTRIES): # Alternating the zone colors
             if x % 2 == 0:
@@ -139,7 +157,7 @@ def format_leaderboard(root, screen):
 
             # Determine name field data
             try:
-                name_data_easy = scores_easy["scores"][x][0]["name"]
+                name_data_easy = name_data_easy_list[x]
             
             except IndexError:
                 # To handle out of range errors when there are not enough data entries to display
@@ -153,7 +171,7 @@ def format_leaderboard(root, screen):
 
             # Determine score field data
             try:
-                raw_score_data_easy = scores_easy["scores"][x][0]["score"]
+                raw_score_data_easy = score_data_easy_list[x]
                 score_data_easy = str(raw_score_data_easy)
             
             except IndexError:
@@ -181,6 +199,22 @@ def format_leaderboard(root, screen):
         screen.blit(message_object_hard, message_rect_hard)
 
     else:
+        # Create new unsorted dictionaries from the data
+        scores_hard_unsorted = scores_setup()
+
+        for x in range(0, len(scores_hard["scores"])):
+            scores_hard_unsorted.add(scores_hard["scores"][x][0]["name"], scores_hard["scores"][x][0]["score"])
+        
+        # Sort the new dictionaries
+        scores_hard_sorted = {k: v for k, v in sorted(scores_hard_unsorted.items(), key=lambda v: v[1])}
+
+        name_data_hard_list = []
+        score_data_hard_list = []
+
+        for k, v in scores_hard_sorted.items():
+            name_data_hard_list.append(k)
+            score_data_hard_list.append(v)
+
         # Format and display the high scores
         for x in range (0, MAX_ENTRIES): # Alternating the zone colors
             if x % 2 == 0:
@@ -201,7 +235,7 @@ def format_leaderboard(root, screen):
 
             # Determine name field data
             try:
-                name_data_hard = scores_hard["scores"][x][0]["name"]
+                name_data_hard = name_data_hard_list[x]
             
             except IndexError:
                 # To handle out of range errors when there are not enough data entries to display
@@ -215,7 +249,7 @@ def format_leaderboard(root, screen):
 
             # Determine score field data
             try:
-                raw_score_data_hard = scores_hard["scores"][x][0]["score"]
+                raw_score_data_hard = score_data_hard_list[x]
                 score_data_hard = str(raw_score_data_hard)
             
             except IndexError:

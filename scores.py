@@ -18,6 +18,15 @@
 #==========================================================================================================
 import json
 
+class scores_setup(dict):
+    # Used to create copies of existing dictionaries to be used in sorting
+    def __init__(self):
+        self = dict()
+    
+    def add(self, name, score):
+        self[name] = score
+
+
 def load_scores(difficulty): 
     # Return the raw scoring data as a dict, requires difficulty as a parameter. Example Implementation:
     # my_data_object = load_scores(difficulty="my_difficulty_choice")
