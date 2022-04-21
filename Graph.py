@@ -59,6 +59,7 @@ class Graph:
 
 
     def generateGraph(self, unitCount):
+        self.units.clear() # Necessary if generateGraph() is called multiple times(to get graph with min boat size of 1)
         for number in range(0, unitCount):
             buffer = self.getRandomUnit()
 
@@ -80,7 +81,7 @@ class Graph:
         return True
     
     def getMinimumBoatSize(self):
-        minBoatSize = 0
+        minBoatSize = -1
 
         for unit in self.units:
             for prey in self.units[unit]:

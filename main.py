@@ -11,9 +11,10 @@ import pygame
 import math
 import menu_button
 import scores
+import Graph
 from pygame.locals import *
 from leaderboard import display_leaderboard
-from simulation import run_simulation
+from simulation import run_simulation, check_unit_conflicts
 
 # Main window
 root = tk.Tk()
@@ -79,11 +80,11 @@ def handleEvents():
 
 # Sounds
 # Game Music, loop by setting -1 as the .play() 'loops' param
-pygame.mixer.music.load(r'Sounds/game_music.mp3')
+pygame.mixer.music.load(r'Sounds/game_music.wav')
 pygame.mixer.music.set_volume(0.7)
 pygame.mixer.music.play(-1)
 # Menu Noises
-click_sound = pygame.mixer.Sound(r'Sounds/click_sound.mp3')
+click_sound = pygame.mixer.Sound(r'Sounds/click_sound.wav')
 pygame.mixer.Sound.set_volume(click_sound, 0.5)
 
 # Images
@@ -119,24 +120,44 @@ while run:
 
     if easy_button.draw(screen):
         pygame.mixer.Sound.play(click_sound)
-        # calling start of simulation with difficulty = 0 (easy), and boat size/capacity = 1 
-        # Need to change the difficulty setting to game graph input
-        turn_count = run_simulation(0, 1)
-        print("Game won, turns used: " + str(turn_count))
+        
+        graph = Graph.Graph()
+        min_boat_size = 0
+        conflicts = []
+        while min_boat_size != 1 or conflicts.__len__() < 2:
+            graph.generateGraph(3)
+            conflicts = check_unit_conflicts(graph, graph, 0, graph.units)
+            print(conflicts)
+            min_boat_size = graph.getMinimumBoatSize()
+            print(min_boat_size)
+            
+        turn_count = run_simulation(graph.units, min_boat_size)
+        
+        print("Turns used: " + str(turn_count))
 
     if hard_button.draw(screen):
         pygame.mixer.Sound.play(click_sound)
-        print('easy')
-        run = False
+        
+        graph = Graph.Graph()
+        min_boat_size = 0
+        conflicts = []
+        while min_boat_size != 2 or conflicts.__len__() < 3:
+            graph.generateGraph(6)
+            conflicts = check_unit_conflicts(graph, graph, 0, graph.units)
+            print(conflicts)
+            min_boat_size = graph.getMinimumBoatSize()
+            print(min_boat_size)
+            
+        turn_count = run_simulation(graph.units, min_boat_size)
+        
+        print("Turns used: " + str(turn_count))
 
     if options_button.draw(screen):
         pygame.mixer.Sound.play(click_sound)
-        print('easy')
         run = False
 
     if instructions_button.draw(screen):
         pygame.mixer.Sound.play(click_sound)
-        print('easy')
         run = False
 
     if credits_button.draw(screen):
