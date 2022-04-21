@@ -12,18 +12,40 @@ class Graph:
     def __init__(self, units={}):
         self.units = units
         self.presets = {
-            "Wolf": ["Cow", "Sheep", "Rabbit"],
+            #Eats Many
+            "Fox":["Cat", "Chicken", "Cow", "Sheep", "Mouse"],
+            "Wolf": ["Cow", "Sheep", "Rabbit", "Goose"],
+            "Snake": ["Rabbit", "Mouse", "Squirrel", "Frogs"],
+
+
+            #Eats a Few
+            "Rabbit":["Carrot", "Grass"],
+            "Goat": ["Broccoli", "Grass"],
+            "Monkey":["Banana", "Fruit"],
+            "Owl": ["Mouse", "Squirrel"],
+
+            #Eats One
             "Cow": ["Grass"],
             "Sheep": ["Grass"],
-            "Grass": [],
-            "Carrot": [],
-            "Carrot": [],
             "Cat": ["Mouse"],
             "Dog": ["Cat"],
             "Mouse": ["Cheese"],
-            "Cheese": [],
             "Chicken": ["Seeds"],
-            "Seeds":[]
+            "Goose": ["Grass"],
+            "Squirrel": ["Nuts"],
+            "Frog": ["Bug"],
+            "Bug": ["Grass"],
+
+            #Eats None
+            "Grass": [],
+            "Carrot": [],
+            "Cheese": [],
+            "Seeds":[],
+            "Broccoli": [],
+            "Banana": [],
+            "Fruit":[],
+            "Nuts": []
+
         }
 
     def __str__(self):
@@ -66,6 +88,22 @@ class Graph:
                 if(self.contains(prey)):
                     minBoatSize += 1
         return minBoatSize
+
+    def loadImage(self, unitName):
+        print("NYI")
+
+    def getOptimalPath(self):
+        optimalTurn = {}
+
+        #get initial predators
+        for unit in self.units:
+            for prey in self.units[unit]:
+                if(self.contains(prey)):
+                    optimalTurn.dd(unit)
+
+        #Check for overlapping
+
+        return optimalTurn
 
 
 
