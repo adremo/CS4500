@@ -132,8 +132,10 @@ while run:
             print(min_boat_size)
             
         turn_count = run_simulation(graph.units, min_boat_size)
-        
-        print("Turns used: " + str(turn_count))
+                
+        if turn_count > 0:
+            print("Turns used: " + str(turn_count))
+            scores.save_score("easy", "test_name", turn_count)
 
     if hard_button.draw(screen):
         pygame.mixer.Sound.play(click_sound)
@@ -150,7 +152,9 @@ while run:
             
         turn_count = run_simulation(graph.units, min_boat_size)
         
-        print("Turns used: " + str(turn_count))
+        if turn_count > 0:
+            print("Turns used: " + str(turn_count))
+            scores.save_score("hard", "test_name", turn_count * 2)
 
     if options_button.draw(screen):
         pygame.mixer.Sound.play(click_sound)

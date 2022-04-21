@@ -276,12 +276,13 @@ def run_simulation(game_graph, boat_size):
             unit_buttons_boat[unit] = (boat_button)
             boat_count += 1
 
-        # Handle all user input
+        # Handle user input
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 sys.exit()
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
+                    turn_count = -1
                     run = False
         
         pygame.time.wait(20)
