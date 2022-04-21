@@ -52,13 +52,13 @@ font = pygame.font.Font('freesansbold.ttf', 36)
 small_font = pygame.font.Font('freesansbold.ttf', 24)
 
 # Sounds
-click_sound = pygame.mixer.Sound(r'Sounds/click_sound.mp3')
+click_sound = pygame.mixer.Sound(r'Sounds/click_sound.wav')
 pygame.mixer.Sound.set_volume(click_sound, 0.5)
-victory_sound = pygame.mixer.Sound(r'Sounds/victory_sound.mp3')
+victory_sound = pygame.mixer.Sound(r'Sounds/victory_sound.wav')
 pygame.mixer.Sound.set_volume(victory_sound, 0.8)
-cancel_sound = pygame.mixer.Sound(r'Sounds/cancel_sound.mp3')
+cancel_sound = pygame.mixer.Sound(r'Sounds/cancel_sound.wav')
 pygame.mixer.Sound.set_volume(cancel_sound, 0.5)
-water_sound = pygame.mixer.Sound(r'Sounds/water_sound.mp3')
+water_sound = pygame.mixer.Sound(r'Sounds/water_sound.wav')
 
 
 # Images
