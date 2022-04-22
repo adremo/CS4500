@@ -41,9 +41,10 @@ class Button:
         return action
     
 class Unit_Button:
-    def __init__(self, x, y, image):
+    def __init__(self, name, x, y, image):
         width = root.winfo_screenwidth()
         height = root.winfo_screenheight()
+        self.name = name
         self.image = pygame.transform.scale(image, (int(width * .04), int(height * .06)))
         self.rect = self.image.get_rect()
         self.rect.topleft = (x, y)
@@ -58,7 +59,7 @@ class Unit_Button:
             height = root.winfo_screenheight()
 
             if pygame.mouse.get_pressed()[0] == 1 and self.clicked == False:
-                print('clicked')
+                print('clicked on ' + str(self.name))
                 self.clicked = True
                 action = True
         if pygame.mouse.get_pressed()[0] == 0:
@@ -67,4 +68,3 @@ class Unit_Button:
         surface.blit(self.image, (self.rect.x, self.rect.y))
 
         return action
-
