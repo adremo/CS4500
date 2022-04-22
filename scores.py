@@ -62,10 +62,26 @@ def save_score(difficulty, new_name, new_score):
     # Difficulty must be specified as "easy" or "hard" or an error will be thrown and no data will be saved
     # This function does not type check, so have care to pass your name as a string and your score as an int
     if difficulty == "easy":
+        test_score = 0
+       
         try:
             with open("./easy.json", "r+", encoding="utf-8") as f:
                 scores_easy = json.load(f)
 
+                if len(scores_easy["scores"]) >= 1: # Ensures that only the best score per player is recorded
+                    for x in range(0, len(scores_easy["scores"])):
+                        if scores_easy["scores"][x][0]["name"] == new_name:
+                            if new_score >= scores_easy["scores"][x][0]["score"]:
+                                return
+                            else:
+                                # Edit the existing json entry
+                                scores_easy["scores"][x][0]["score"] = new_score
+                                f.seek(0)
+                                json.dump(scores_easy, f, indent=4) # Convert the saved data to json
+                                return
+                        else:
+                            continue
+               
                 new_data = {
                         "name": new_name,
                         "score": new_score
