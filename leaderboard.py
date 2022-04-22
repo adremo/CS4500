@@ -18,6 +18,7 @@
 import pygame
 import sys
 import tkinter as tk
+import menu_button
 from pygame.locals import *
 from scores import scores_setup, load_scores
 
@@ -295,6 +296,21 @@ def display_leaderboard(root, screen):
                     running = False
         
         format_leaderboard(root, screen)
+
+        # Menu Noises
+        click_sound = pygame.mixer.Sound(r'Sounds/click_sound.wav')
+        pygame.mixer.Sound.set_volume(click_sound, 0.5)
+        
+        # Back to main menu button
+        #menu_boat_image = pygame.image.load(r'Images/Menu_Boat.png').convert_alpha()
+        #back_button_image = pygame.image.load(r'Images/back_arrow.png').convert_alpha()
+        #main_menu_button = menu_button.Custom_Button(200, 800, back_button_image, optional_hover_image=menu_boat_image)
+        main_menu_button = menu_button.Back_Button()
+
+        if main_menu_button.draw_back_button(screen):
+            pygame.mixer.Sound.play(click_sound)
+            running = False
+
         pygame.display.update()
     
     return
