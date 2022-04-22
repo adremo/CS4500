@@ -111,6 +111,20 @@ def save_score(difficulty, new_name, new_score):
             with open("./hard.json", "r+", encoding="utf-8") as f:
                 scores_hard = json.load(f)
 
+                if len(scores_hard["scores"]) >= 1: # Ensures that only the best score per player is recorded
+                    for x in range(0, len(scores_hard["scores"])):
+                        if scores_hard["scores"][x][0]["name"] == new_name:
+                            if new_score >= scores_hard["scores"][x][0]["score"]:
+                                return
+                            else:
+                                # Edit the existing json entry
+                                scores_hard["scores"][x][0]["score"] = new_score
+                                f.seek(0)
+                                json.dump(scores_hard, f, indent=4) # Convert the saved data to json
+                                return
+                        else:
+                            continue
+               
                 new_data = {
                         "name": new_name,
                         "score": new_score
