@@ -121,6 +121,8 @@ while run:
     if easy_button.draw(screen):
         pygame.mixer.Sound.play(click_sound)
         
+        #unit_count = user_input.get_unit_count()
+        
         graph = Graph.Graph()
         min_boat_size = 0
         conflicts = []
@@ -144,7 +146,7 @@ while run:
         min_boat_size = 0
         conflicts = []
         while min_boat_size != 2 or conflicts.__len__() < 3:
-            graph.generateGraph(6)
+            graph.generateGraph(5)
             conflicts = check_unit_conflicts(graph, graph, 0, graph.units)
             print(conflicts)
             min_boat_size = graph.getMinimumBoatSize()
@@ -154,7 +156,7 @@ while run:
         
         if turn_count > 0:
             print("Turns used: " + str(turn_count))
-            scores.save_score("hard", "test_name", turn_count * 2)
+            scores.save_score("hard", "test_name", turn_count)
 
     if options_button.draw(screen):
         pygame.mixer.Sound.play(click_sound)

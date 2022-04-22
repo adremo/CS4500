@@ -14,14 +14,11 @@
 
 import sys
 import pygame
-import tkinter as tk
 import menu_button
 import scores
 import Graph
 
 #set up screen
-root = tk.Tk()
-root.withdraw()
 pygame.init()
 screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
 offset = 0.0
