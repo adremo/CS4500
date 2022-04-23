@@ -56,31 +56,52 @@ class TestSaveScore(unittest.TestCase):
         self.assertEqual(NAME_1, actual_name)
         self.assertEqual(SCORE, actual_score)
     
+    def testEmptyFileEasy(self):
+        """If an empty .json file containing no data is present, data is saved to it"""
+        delete_files()
+        f = open("./easy.json", "w")
+        save_score(difficulty=EASY_DIFFICULTY, new_name=NAME_1, new_score=SCORE)
+        test_data = load_scores(difficulty=EASY_DIFFICULTY)
+        actual_name = test_data["scores"][0][0]["name"]
+        actual_score = test_data["scores"][0][0]["score"]
+        self.assertEqual(NAME_1, actual_name)
+        self.assertEqual(SCORE, actual_score)
+        f.close()
+    
     def testSecondEntryEasy(self):
         """If a .json file containing at least 1 entry of data is present and a second entry with no overlapping name is saved"""
+        delete_files()
+        save_score(difficulty=EASY_DIFFICULTY, new_name=NAME_1, new_score=SCORE)
         save_score(difficulty=EASY_DIFFICULTY, new_name=NAME_2, new_score=SCORE)
         test_data = load_scores(difficulty=EASY_DIFFICULTY)
+        
         actual_name = test_data["scores"][-1][0]["name"]
         actual_score = test_data["scores"][-1][0]["score"]
         self.assertEqual(NAME_2, actual_name)
         self.assertEqual(SCORE, actual_score)
+        
+        expected_num_entries = 2
+        actual_num_entries = len(test_data["scores"])
+        self.assertEqual(expected_num_entries, actual_num_entries)
     
-    def duplicateNameSameScoreEasy(self):
+    def testDuplicateNameSameScoreEasy(self):
         """
         If a .json file containing at least 1 entry of data is present and a third entry with an overlapping name 
         is saved with the same score (nothing should happen and no new data should be saved)
         """
-        test_data = load_scores(difficulty=EASY_DIFFICULTY)
-        expected_number_of_saves = len(test_data["scores"])
-        
+        delete_files()
+        save_score(difficulty=EASY_DIFFICULTY, new_name=NAME_2, new_score=1)
+        save_score(difficulty=EASY_DIFFICULTY, new_name=NAME_1, new_score=SCORE)
         save_score(difficulty=EASY_DIFFICULTY, new_name=NAME_1, new_score=SAME_SCORE)
         test_data = load_scores(difficulty=EASY_DIFFICULTY)
+        
         actual_name = test_data["scores"][-1][0]["name"]
         actual_score = test_data["scores"][-1][0]["score"]
-        actual_number_of_saves = len(test_data["scores"])
-        
         self.assertEqual(NAME_1, actual_name)
         self.assertEqual(SCORE, actual_score)
+        
+        expected_number_of_saves = 2
+        actual_number_of_saves = len(test_data["scores"])
         self.assertEqual(expected_number_of_saves, actual_number_of_saves)
     
     # Tests for "hard" difficulty
@@ -93,31 +114,52 @@ class TestSaveScore(unittest.TestCase):
         self.assertEqual(NAME_1, actual_name)
         self.assertEqual(SCORE, actual_score)
     
+    def testEmptyFileHard(self):
+        """If an empty .json file containing no data is present, data is saved to it"""
+        delete_files()
+        f = open("./hard.json", "w")
+        save_score(difficulty=HARD_DIFFICULTY, new_name=NAME_1, new_score=SCORE)
+        test_data = load_scores(difficulty=HARD_DIFFICULTY)
+        actual_name = test_data["scores"][0][0]["name"]
+        actual_score = test_data["scores"][0][0]["score"]
+        self.assertEqual(NAME_1, actual_name)
+        self.assertEqual(SCORE, actual_score)
+        f.close()
+    
     def testSecondEntryHard(self):
         """If a .json file containing at least 1 entry of data is present and a second entry with no overlapping name is saved"""
+        delete_files()
+        save_score(difficulty=HARD_DIFFICULTY, new_name=NAME_1, new_score=SCORE)
         save_score(difficulty=HARD_DIFFICULTY, new_name=NAME_2, new_score=SCORE)
         test_data = load_scores(difficulty=HARD_DIFFICULTY)
+        
         actual_name = test_data["scores"][-1][0]["name"]
         actual_score = test_data["scores"][-1][0]["score"]
         self.assertEqual(NAME_2, actual_name)
         self.assertEqual(SCORE, actual_score)
+
+        expected_num_entries = 2
+        actual_num_entries = len(test_data["scores"])
+        self.assertEqual(expected_num_entries, actual_num_entries)
     
-    def duplicateNameSameScoreHard(self):
+    def testDuplicateNameSameScoreHard(self):
         """
         If a .json file containing at least 1 entry of data is present and a third entry with an overlapping name 
         is saved with the same score (nothing should happen and no new data should be saved)
         """
-        #test_data = load_scores(difficulty=HARD_DIFFICULTY)
-        expected_number_of_saves = 55
-        
+        delete_files()
+        save_score(difficulty=HARD_DIFFICULTY, new_name=NAME_2, new_score=1)
+        save_score(difficulty=HARD_DIFFICULTY, new_name=NAME_1, new_score=SCORE)
         save_score(difficulty=HARD_DIFFICULTY, new_name=NAME_1, new_score=SAME_SCORE)
         test_data = load_scores(difficulty=HARD_DIFFICULTY)
+        
         actual_name = test_data["scores"][-1][0]["name"]
         actual_score = test_data["scores"][-1][0]["score"]
-        actual_number_of_saves = 27
-        
         self.assertEqual(NAME_1, actual_name)
         self.assertEqual(SCORE, actual_score)
+        
+        expected_number_of_saves = 2
+        actual_number_of_saves = len(test_data["scores"])
         self.assertEqual(expected_number_of_saves, actual_number_of_saves)
 
 
