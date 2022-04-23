@@ -17,14 +17,11 @@
 # =========================================================================================================
 import pygame
 import sys
-import tkinter as tk
 import menu_button
 from pygame.locals import *
 from scores import scores_setup, load_scores
 
 # Setting up window
-root = tk.Tk()
-root.withdraw()
 pygame.init()
 screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
 offset = 0.0

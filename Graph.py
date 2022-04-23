@@ -13,14 +13,14 @@ class Graph:
         self.units = units
         self.presets = {
             #Eats Many
-            "Fox":["Cat", "Chicken", "Cow", "Sheep", "Mouse"],
-            "Wolf": ["Cow", "Sheep", "Rabbit", "Goose"],
-            "Snake": ["Rabbit", "Mouse", "Squirrel", "Frogs"],
+            "Fox":["Chicken", "Rabbit", "Goose", "Squirrel", "Mouse"],
+            "Wolf": ["Cow", "Sheep", "Rabbit", "Goose", "Goat", "Chicken"],
+            "Snake": ["Rabbit", "Mouse", "Squirrel", "Frog"],
 
 
             #Eats a Few
-            "Rabbit":["Carrot", "Grass"],
-            "Goat": ["Broccoli", "Grass"],
+            "Rabbit":["Carrot", "Grass", "Broccoli"],
+            "Goat": ["Broccoli", "Grass", "Carrot"],
             "Monkey":["Banana", "Fruit"],
             "Owl": ["Mouse", "Squirrel"],
 
@@ -59,7 +59,7 @@ class Graph:
 
 
     def generateGraph(self, unitCount):
-        self.units.clear() # Necessary if generateGraph() is called multiple times(to get graph with min boat size of 1)
+        self.units.clear() # Necessary if generateGraph() is called multiple times(to get graph with specific boat size)
         for number in range(0, unitCount):
             buffer = self.getRandomUnit()
 
@@ -83,6 +83,7 @@ class Graph:
     def getMinimumBoatSize(self):
         minBoatSize = -1
 
+        print("Prey list for current graph:")
         for unit in self.units:
             for prey in self.units[unit]:
                 print(prey)
