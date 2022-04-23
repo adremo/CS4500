@@ -35,7 +35,6 @@ def load_scores(difficulty):
         try:
             with open("./easy.json", "r", encoding="utf-8") as f:
                 scores_easy = json.load(f)
-                f.close()
             
         except FileNotFoundError: # Create temporary data storage if no local saved data is found
             scores_easy = {}
@@ -46,7 +45,6 @@ def load_scores(difficulty):
         try:
             with open("./hard.json", "r", encoding="utf-8") as f:
                 scores_hard = json.load(f)
-                f.close()
             
         except FileNotFoundError: # Create temporary data storage if no local saved data is found
             scores_hard = {}
@@ -78,7 +76,6 @@ def save_score(difficulty, new_name, new_score):
                                 scores_easy["scores"][x][0]["score"] = new_score
                                 f.seek(0)
                                 json.dump(scores_easy, f, indent=4) # Convert the saved data to json
-                                f.close()
                                 return
                         else:
                             continue
@@ -91,7 +88,6 @@ def save_score(difficulty, new_name, new_score):
                 scores_easy["scores"].append(new_data) # Add the new data to the existing data
                 f.seek(0)
                 json.dump(scores_easy, f, indent=4) # Convert the saved data to json
-                f.close()
             
         except FileNotFoundError: # Create temporary data storage if no local saved data is found
             scores_easy = {
@@ -124,7 +120,6 @@ def save_score(difficulty, new_name, new_score):
                                 scores_hard["scores"][x][0]["score"] = new_score
                                 f.seek(0)
                                 json.dump(scores_hard, f, indent=4) # Convert the saved data to json
-                                f.close()
                                 return
                         else:
                             continue
@@ -137,7 +132,6 @@ def save_score(difficulty, new_name, new_score):
                 scores_hard["scores"].append(new_data) # Add the new data to the existing data
                 f.seek(0)
                 json.dump(scores_hard, f, indent=4) # Convert the saved data to json
-                f.close()
             
         except FileNotFoundError: # Create temporary data storage if no local saved data is found
             scores_hard = {
@@ -153,7 +147,6 @@ def save_score(difficulty, new_name, new_score):
 
             f = open("./hard.json", "w") # Create the new local storage file
             json.dump(scores_hard, f, indent=4) # Save the data to the new json file
-            f.close()
     
     else:
         print("Error in saving scores. Was 'difficulty' correctly specified?")
