@@ -49,24 +49,13 @@ class TestSaveScore(unittest.TestCase):
     # Tests for "easy" difficulty
     def testFileCreationEasy(self):
         """If no .json file is present, one is created and data is saved to it"""
-        save_score(difficulty=EASY_DIFFICULTY, new_name=NAME_1, new_score=SCORE)
-        test_data = load_scores(difficulty=EASY_DIFFICULTY)
-        actual_name = test_data["scores"][0][0]["name"]
-        actual_score = test_data["scores"][0][0]["score"]
-        self.assertEqual(NAME_1, actual_name)
-        self.assertEqual(SCORE, actual_score)
-    
-    def testEmptyFileEasy(self):
-        """If an empty .json file containing no data is present, data is saved to it"""
         delete_files()
-        f = open("./easy.json", "w")
         save_score(difficulty=EASY_DIFFICULTY, new_name=NAME_1, new_score=SCORE)
         test_data = load_scores(difficulty=EASY_DIFFICULTY)
         actual_name = test_data["scores"][0][0]["name"]
         actual_score = test_data["scores"][0][0]["score"]
         self.assertEqual(NAME_1, actual_name)
         self.assertEqual(SCORE, actual_score)
-        f.close()
     
     def testSecondEntryEasy(self):
         """If a .json file containing at least 1 entry of data is present and a second entry with no overlapping name is saved"""
@@ -107,24 +96,13 @@ class TestSaveScore(unittest.TestCase):
     # Tests for "hard" difficulty
     def testFileCreationHard(self):
         """If no .json file is present, one is created and data is saved to it"""
-        save_score(difficulty=HARD_DIFFICULTY, new_name=NAME_1, new_score=SCORE)
-        test_data = load_scores(difficulty=HARD_DIFFICULTY)
-        actual_name = test_data["scores"][0][0]["name"]
-        actual_score = test_data["scores"][0][0]["score"]
-        self.assertEqual(NAME_1, actual_name)
-        self.assertEqual(SCORE, actual_score)
-    
-    def testEmptyFileHard(self):
-        """If an empty .json file containing no data is present, data is saved to it"""
         delete_files()
-        f = open("./hard.json", "w")
         save_score(difficulty=HARD_DIFFICULTY, new_name=NAME_1, new_score=SCORE)
         test_data = load_scores(difficulty=HARD_DIFFICULTY)
         actual_name = test_data["scores"][0][0]["name"]
         actual_score = test_data["scores"][0][0]["score"]
         self.assertEqual(NAME_1, actual_name)
         self.assertEqual(SCORE, actual_score)
-        f.close()
     
     def testSecondEntryHard(self):
         """If a .json file containing at least 1 entry of data is present and a second entry with no overlapping name is saved"""
@@ -163,6 +141,5 @@ class TestSaveScore(unittest.TestCase):
         self.assertEqual(expected_number_of_saves, actual_number_of_saves)
 
 
-delete_files()
 if __name__ == "__main__":
     unittest.main()
