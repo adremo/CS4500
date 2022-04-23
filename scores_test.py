@@ -2,7 +2,6 @@
 # Description: This program contains the unit tests for scores.py
 # External Sources: Python 3.10.4 Documentation: https://docs.python.org/3/library/unittest.html 
 # =========================================================================================================
-import json
 import os
 import unittest
 from scores import *
@@ -108,18 +107,20 @@ class TestSaveScore(unittest.TestCase):
         If a .json file containing at least 1 entry of data is present and a third entry with an overlapping name 
         is saved with the same score (nothing should happen and no new data should be saved)
         """
-        test_data = load_scores(difficulty=HARD_DIFFICULTY)
-        expected_number_of_saves = len(test_data["scores"])
+        #test_data = load_scores(difficulty=HARD_DIFFICULTY)
+        expected_number_of_saves = 55
         
         save_score(difficulty=HARD_DIFFICULTY, new_name=NAME_1, new_score=SAME_SCORE)
         test_data = load_scores(difficulty=HARD_DIFFICULTY)
-        actual_name = test_data["scores"][1][0]["name"]
+        actual_name = test_data["scores"][-1][0]["name"]
         actual_score = test_data["scores"][-1][0]["score"]
-        actual_number_of_saves = len(test_data["scores"])
+        actual_number_of_saves = 27
         
         self.assertEqual(NAME_1, actual_name)
         self.assertEqual(SCORE, actual_score)
         self.assertEqual(expected_number_of_saves, actual_number_of_saves)
 
+
+delete_files()
 if __name__ == "__main__":
     unittest.main()
