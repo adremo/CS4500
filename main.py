@@ -9,6 +9,7 @@ import tkinter as tk
 import sys
 import pygame
 import math
+import json
 import menu_button
 import scores
 import Graph
@@ -79,6 +80,19 @@ def handleEvents():
                 running = False
 
 # Sounds
+try:
+    with open("./options.json", "r+", encoding="utf-8") as f:
+        sound_options = json.load(f)
+
+except FileNotFoundError:
+    sound_options = {
+                        "music": True,
+                        "sounds": True       
+                    }
+
+    f = open("./options.json", "w") # Create the new local storage file
+    json.dump(sound_options, f, indent=4) # Save the data to the new json file
+
 # Game Music, loop by setting -1 as the .play() 'loops' param
 pygame.mixer.music.load(r'Sounds/game_music.wav')
 pygame.mixer.music.set_volume(0.7)
