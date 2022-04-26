@@ -1,0 +1,118 @@
+# Author: Tiana Madison
+# Date: 25 April 2022
+# Class: CS 4500
+# ========================================================================================================
+# Description: This program handles the options menu.
+# =========================================================================================================
+# Central Data Structures used: Dictionaries
+# =========================================================================================================
+# External Files: json (There is no need to add anything, the program will create the necessary files)
+# =========================================================================================================
+# External Sources used: Python 3.10.4 Documentation: https://docs.python.org/3/library/json.html
+# Pygame Documenation: https://www.pygame.org/docs/ref/mixer.html 
+# =========================================================================================================
+import pygame
+import json
+import sys
+import menu_button
+from pygame.locals import *
+
+# Setting up window
+pygame.init()
+screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
+offset = 0.0
+
+def format_options(root, screen):
+    # Setting up options menu appearance
+
+    # Color List
+    black = Color(0, 0, 0)
+    blue = Color(58, 121, 227)
+    light_blue = Color(30, 30, 230)
+    lighter_blue = Color(80, 80, 245)
+    brown = Color(100, 70, 50)
+    green = Color(82, 216, 50)
+    purple = Color(112, 65, 192)
+    light_purple = Color(186, 156, 199)
+    pink = Color(203, 165, 188)
+    magenta = Color(172, 89, 188)
+    teal = Color(41, 106, 131)
+    light_teal = Color(98, 184, 208)
+
+    BACKGROUND_COLOR = Color(34, 26, 92)
+    SUB_BACKGROUND_COLOR = black
+    TEXT_COLOR = Color(255, 255, 255)
+    HEADER_COLOR = teal
+    HEADER_COLOR_HARD = teal
+    SUBHEADER_COLOR_EASY = teal
+    SUBHEADER_COLOR_HARD = teal
+    MESSAGE_BACKGROUND_COLOR = teal
+    ENTRY_BACKGROUND_1 = Color(54, 154, 181)
+    ENTRY_BACKGROUND_2 = light_teal
+
+    # Font
+    header_font = pygame.font.SysFont(None, 75)
+    subheader_font = pygame.font.SysFont(None, 50)
+    entry_font = pygame.font.SysFont(None, 40)
+
+    # Surface building and positioning
+    x_offset = 900
+    y_offset = 50
+    starting_offset = 165 + (y_offset * 2.5)
+    screen_width = root.winfo_screenwidth()
+    screen_height = root.winfo_screenheight() 
+    entry_x_offset_easy = (screen_width/2) - 200
+    entry_x_offset_hard = (screen_width/2) - 150
+    background_sub_rect = Rect(50, (screen_height/2) - 500, screen_width - 100, 1000)
+    header_zone = Rect(100, 100, screen_width - 200, 150)
+    content_zone = Rect(100, starting_offset, screen_width - 200, 700)
+    subheader_zone_easy = Rect(100, 210, (screen_width/2) - 200, 70)
+    subheader_zone_hard = Rect(1000, 210, (screen_width/2) - 150, 70)
+
+    # Header text
+    header_text = "Options"
+    header_text_hard = "Best Scores: Hard Difficulty"
+    subheader_text = "Rank                    Name                    Score"
+
+    # Setting up the main surfaces
+    screen.fill(BACKGROUND_COLOR)
+    pygame.draw.rect(screen, SUB_BACKGROUND_COLOR, background_sub_rect)
+    pygame.draw.rect(screen, HEADER_COLOR, header_zone)
+    pygame.draw.rect(screen, HEADER_COLOR, content_zone)
+    #pygame.draw.rect(screen, SUBHEADER_COLOR_EASY, subheader_zone_easy)
+    #pygame.draw.rect(screen, SUBHEADER_COLOR_HARD, subheader_zone_hard)
+
+def display_options_menu(root, screen):
+    # Main loop that controls the options page
+    # Takes the root and screen from the main file as parameters
+    running = True
+    FPS = 60 # Locks the FPS on the screen to this value
+    clock = pygame.time.Clock()
+    while running:
+        clock.tick(FPS)
+        for event in pygame.event.get():
+            if event.type == QUIT:
+                pygame.quit()
+                sys.exit()
+            if event.type == KEYDOWN:
+                if event.key == K_ESCAPE:
+                    running = False
+        
+        format_options(root, screen)
+
+        # Menu Noises
+        click_sound = pygame.mixer.Sound(r'Sounds/click_sound.wav')
+        pygame.mixer.Sound.set_volume(click_sound, 0.5)
+        
+        # Back to main menu button
+        main_menu_button = menu_button.Back_Button()
+
+        if main_menu_button.draw_back_button(screen):
+            pygame.mixer.Sound.play(click_sound)
+            running = False
+
+        pygame.display.update()
+    
+    return
+
+pygame.quit()
