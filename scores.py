@@ -103,7 +103,6 @@ def save_score(difficulty, new_name, new_score):
 
             f = open("./easy.json", "w") # Create the new local storage file
             json.dump(scores_easy, f, indent=4) # Save the data to the new json file
-            f.close()
     
     elif difficulty == "hard":
         try:
