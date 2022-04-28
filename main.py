@@ -175,7 +175,7 @@ while run:
 
     if options_button.draw(screen):
         pygame.mixer.Sound.play(click_sound)
-        display_options_menu(root=root, screen=screen)
+        display_options_menu(root=root, screen=screen, options=sound_options)
 
     if instructions_button.draw(screen):
         pygame.mixer.Sound.play(click_sound)

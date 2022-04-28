@@ -11,6 +11,7 @@
 # External Sources used: Python 3.10.4 Documentation: https://docs.python.org/3/library/json.html
 # Pygame Documenation: https://www.pygame.org/docs/ref/mixer.html 
 # =========================================================================================================
+import re
 import pygame
 import json
 import sys
@@ -22,7 +23,48 @@ pygame.init()
 screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
 offset = 0.0
 
-def format_options(root, screen):
+def show_buttons(root, screen, options):
+    # Displays the buttons that control the mute toggle funcionality
+    screen_width = root.winfo_screenwidth()
+    screen_height = root.winfo_screenheight() 
+    button_base_x = (screen_width/2) - 200
+    button_base_y = (screen_width/2) - 150
+    
+    # Menu Volume Control
+    click_sound = pygame.mixer.Sound(r'Sounds/click_sound.wav')
+    if options["sounds"] == False:
+        pygame.mixer.Sound.set_volume(click_sound, 0)
+    else:
+        pygame.mixer.Sound.set_volume(click_sound, 0.5)
+
+    arrow_right = pygame.image.load(r'Images/arrow_right_icon.png')
+    arrow_left = pygame.image.load(r'Images/arrow_left_icon.png')
+
+    # Buttons for muting the music
+    left_music_button = menu_button.Custom_Button(x=button_base_x, y=button_base_y, image=arrow_left)
+    right_music_button = menu_button.Custom_Button(x=button_base_x + 100, y=button_base_y + 100, image=arrow_right)
+
+    if left_music_button.draw_custom_button(screen):
+        pygame.mixer.Sound.play(click_sound)
+        options = toggle_volume_sound(options)
+        pygame.time.wait(20)
+        return options
+    
+    if right_music_button.draw_custom_button(screen):
+        pygame.mixer.Sound.play(click_sound)
+        return options
+
+def toggle_volume_sound(options):
+    if options["sounds"] == False:
+        options["sounds"] = True
+    else:
+        options["sounds"] = False
+    
+    f = open("./options.json", "w") # Create the new local storage file
+    json.dump(options, f, indent=4) # Save the data to the new json file
+    return options
+
+def format_options(root, screen, options):
     # Setting up options menu appearance
 
     # Color List
@@ -51,7 +93,7 @@ def format_options(root, screen):
     ENTRY_BACKGROUND_2 = light_teal
 
     # Font
-    header_font = pygame.font.SysFont(None, 75)
+    header_font = pygame.font.SysFont(None, 120)
     subheader_font = pygame.font.SysFont(None, 50)
     entry_font = pygame.font.SysFont(None, 40)
 
@@ -61,8 +103,8 @@ def format_options(root, screen):
     starting_offset = 165 + (y_offset * 2.5)
     screen_width = root.winfo_screenwidth()
     screen_height = root.winfo_screenheight() 
-    entry_x_offset_easy = (screen_width/2) - 200
-    entry_x_offset_hard = (screen_width/2) - 150
+    button_base_x = (screen_width/2) - 200
+    button_base_y = (screen_width/2) - 150
     background_sub_rect = Rect(50, (screen_height/2) - 500, screen_width - 100, 1000)
     header_zone = Rect(100, 100, screen_width - 200, 150)
     content_zone = Rect(100, starting_offset, screen_width - 200, 700)
@@ -71,8 +113,8 @@ def format_options(root, screen):
 
     # Header text
     header_text = "Options"
-    header_text_hard = "Best Scores: Hard Difficulty"
-    subheader_text = "Rank                    Name                    Score"
+    music_text = "Music:"
+    sounds_text = "Sounds:"
 
     # Setting up the main surfaces
     screen.fill(BACKGROUND_COLOR)
@@ -82,7 +124,26 @@ def format_options(root, screen):
     #pygame.draw.rect(screen, SUBHEADER_COLOR_EASY, subheader_zone_easy)
     #pygame.draw.rect(screen, SUBHEADER_COLOR_HARD, subheader_zone_hard)
 
-def display_options_menu(root, screen):
+    # Fill in the header information
+    header_object = header_font.render(header_text, True, TEXT_COLOR, HEADER_COLOR)
+    header_rect = header_object.get_rect()
+    header_rect.center = ((screen_width/2), 175)
+    screen.blit(header_object, header_rect)
+
+    # Fill in the options menu contents
+    music_object = subheader_font.render(music_text, True, TEXT_COLOR, black)
+    music_rect = music_object.get_rect()
+    music_rect.center = ((screen_width/4), 600)
+    screen.blit(music_object, music_rect)
+
+    sounds_object = subheader_font.render(sounds_text, True, TEXT_COLOR, black)
+    sounds_rect = sounds_object.get_rect()
+    sounds_rect.center = ((screen_width/4), 800)
+    screen.blit(sounds_object, sounds_rect)
+
+    options = show_buttons(root, screen, options)
+
+def display_options_menu(root, screen, options):
     # Main loop that controls the options page
     # Takes the root and screen from the main file as parameters
     running = True
@@ -98,14 +159,16 @@ def display_options_menu(root, screen):
                 if event.key == K_ESCAPE:
                     running = False
         
-        format_options(root, screen)
+        format_options(root, screen, options)
 
         # Menu Noises
         click_sound = pygame.mixer.Sound(r'Sounds/click_sound.wav')
         pygame.mixer.Sound.set_volume(click_sound, 0.5)
         
         # Back to main menu button
-        main_menu_button = menu_button.Back_Button()
+        width = root.winfo_screenwidth()
+        height = root.winfo_screenheight()
+        main_menu_button = menu_button.Back_Button(x=width * 0.07, y=height * 0.85)
 
         if main_menu_button.draw_back_button(screen):
             pygame.mixer.Sound.play(click_sound)
