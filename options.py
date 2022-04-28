@@ -56,7 +56,37 @@ def toggle_volume_sound():
     
     f = open("./options.json", "w") # Create the new local storage file
     json.dump(options, f, indent=4) # Save the data to the new json file
-    return options
+
+def get_music_status(background_color):
+    # Change the sound status text based on whether sound is muted or not
+    options = checkSounds()
+    font = pygame.font.SysFont(None, 50)
+    
+    if options["music"] == False:
+        status = "OFF"
+        text_color = Color(185, 0, 0)
+    else:
+        status = "ON"
+        text_color = Color(0, 209, 0)
+    
+    music_status_object = font.render(status, True, text_color, background_color)
+    return music_status_object
+
+def get_sound_status(background_color):
+    # Change the sound status text based on whether sound is muted or not
+    options = checkSounds()
+    font = pygame.font.SysFont(None, 50)
+    
+    if options["sounds"] == False:
+        status = "OFF"
+        text_color = Color(185, 0, 0)
+    else:
+        status = "ON"
+        text_color = Color(0, 209, 0)
+    
+    sounds_status_object = font.render(status, True, text_color, background_color)
+    return sounds_status_object
+
 
 def format_options(root, screen, options):
     # Setting up options menu appearance
@@ -92,13 +122,13 @@ def format_options(root, screen, options):
     entry_font = pygame.font.SysFont(None, 40)
 
     # Surface building and positioning
-    x_offset = 900
+    button_offset = 100
     y_offset = 50
     starting_offset = 165 + (y_offset * 2.5)
     screen_width = root.winfo_screenwidth()
     screen_height = root.winfo_screenheight() 
-    button_base_x = (screen_width/2) - 200
-    button_base_y = (screen_width/2) - 150
+    button_base_x = (screen_width/3) + 200
+    button_base_y = 475
     background_sub_rect = Rect(50, (screen_height/2) - 500, screen_width - 100, 1000)
     header_zone = Rect(100, 100, screen_width - 200, 150)
     content_zone = Rect(100, starting_offset, screen_width - 200, 700)
@@ -127,20 +157,34 @@ def format_options(root, screen, options):
     # Fill in the options menu contents
     music_object = subheader_font.render(music_text, True, TEXT_COLOR, black)
     music_rect = music_object.get_rect()
-    music_rect.center = ((screen_width/4), 600)
+    music_rect.center = ((screen_width/3), 500)
     screen.blit(music_object, music_rect)
 
     sounds_object = subheader_font.render(sounds_text, True, TEXT_COLOR, black)
     sounds_rect = sounds_object.get_rect()
-    sounds_rect.center = ((screen_width/4), 800)
+    sounds_rect.center = ((screen_width/3), 600)
     screen.blit(sounds_object, sounds_rect)
 
     arrow_right = pygame.image.load(r'Images/arrow_right_icon.png')
     arrow_left = pygame.image.load(r'Images/arrow_left_icon.png')
 
-    # Buttons for muting the music
+    # Music status plates
+    music_status_object = get_music_status(black)
+    music_status_rect = music_status_object.get_rect()
+    music_status_rect.center = (button_base_x + 140, button_base_y + 20)
+    screen.blit(music_status_object, music_status_rect)
+
+    # Sound status plates
+    sounds_status_object = get_sound_status(black)
+    sounds_status_rect = sounds_status_object.get_rect()
+    sounds_status_rect.center = (button_base_x + 140, button_base_y + button_offset + 20)
+    screen.blit(sounds_status_object, sounds_status_rect)
+
+    # Buttons for muting the sounds
     left_music_button = menu_button.Custom_Button(x=button_base_x, y=button_base_y, image=arrow_left)
-    right_music_button = menu_button.Custom_Button(x=button_base_x + 100, y=button_base_y + 100, image=arrow_right)
+    right_music_button = menu_button.Custom_Button(x=button_base_x + 200, y=button_base_y, image=arrow_right)
+    left_sound_button = menu_button.Custom_Button(x=button_base_x, y=button_base_y + button_offset, image=arrow_left)
+    right_sound_button = menu_button.Custom_Button(x=button_base_x + 200, y=button_base_y + button_offset, image=arrow_right)
 
     # Menu Noises
     click_sound = pygame.mixer.Sound(r'Sounds/click_sound.wav')
@@ -148,14 +192,24 @@ def format_options(root, screen, options):
     pygame.mixer.Sound.set_volume(click_sound, volume)
 
     if left_music_button.draw_custom_button(screen):
-        options = toggle_volume_sound()
+        pygame.mixer.Sound.play(click_sound)
+    
+    if right_music_button.draw_custom_button(screen):
+        pygame.mixer.Sound.play(click_sound)
+
+    if left_sound_button.draw_custom_button(screen):
+        toggle_volume_sound()
         volume = control_sound_volume(0.5)
         pygame.mixer.Sound.set_volume(click_sound, volume)
         pygame.mixer.Sound.play(click_sound)
         pygame.time.wait(200)
     
-    if right_music_button.draw_custom_button(screen):
+    if right_sound_button.draw_custom_button(screen):
+        toggle_volume_sound()
+        volume = control_sound_volume(0.5)
+        pygame.mixer.Sound.set_volume(click_sound, volume)
         pygame.mixer.Sound.play(click_sound)
+        pygame.time.wait(200)
 
 def display_options_menu(root, screen, options):
     # Main loop that controls the options page
