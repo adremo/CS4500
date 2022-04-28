@@ -47,6 +47,18 @@ def control_sound_volume(default):
         volume = default
     return volume
 
+def toggle_volume_music():
+    options = checkSounds()
+    if options["music"] == False:
+        options["music"] = True
+        pygame.mixer.music.set_volume(0.7)
+    else:
+        options["music"] = False
+        pygame.mixer.music.set_volume(0)
+    
+    f = open("./options.json", "w")
+    json.dump(options, f, indent=4)
+
 def toggle_volume_sound():
     options = checkSounds()
     if options["sounds"] == False:
@@ -54,8 +66,8 @@ def toggle_volume_sound():
     else:
         options["sounds"] = False
     
-    f = open("./options.json", "w") # Create the new local storage file
-    json.dump(options, f, indent=4) # Save the data to the new json file
+    f = open("./options.json", "w")
+    json.dump(options, f, indent=4)
 
 def get_music_status(background_color):
     # Change the sound status text based on whether sound is muted or not
@@ -192,10 +204,14 @@ def format_options(root, screen, options):
     pygame.mixer.Sound.set_volume(click_sound, volume)
 
     if left_music_button.draw_custom_button(screen):
+        toggle_volume_music()
         pygame.mixer.Sound.play(click_sound)
+        pygame.time.wait(200)
     
     if right_music_button.draw_custom_button(screen):
+        toggle_volume_music()
         pygame.mixer.Sound.play(click_sound)
+        pygame.time.wait(200)
 
     if left_sound_button.draw_custom_button(screen):
         toggle_volume_sound()
