@@ -23,38 +23,32 @@ pygame.init()
 screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
 offset = 0.0
 
-def show_buttons(root, screen, options):
-    # Displays the buttons that control the mute toggle funcionality
-    screen_width = root.winfo_screenwidth()
-    screen_height = root.winfo_screenheight() 
-    button_base_x = (screen_width/2) - 200
-    button_base_y = (screen_width/2) - 150
+def checkSounds():
+    try:
+        with open("./options.json", "r+", encoding="utf-8") as f:
+            sound_options = json.load(f)
+
+    except FileNotFoundError:
+        sound_options = {
+                            "music": True,
+                            "sounds": True       
+                        }
+
+        f = open("./options.json", "w") # Create the new local storage file
+        json.dump(sound_options, f, indent=4) # Save the data to the new json file
     
-    # Menu Volume Control
-    click_sound = pygame.mixer.Sound(r'Sounds/click_sound.wav')
-    if options["sounds"] == False:
-        pygame.mixer.Sound.set_volume(click_sound, 0)
+    return sound_options
+
+def control_sound_volume(default):
+    sound_options = checkSounds()
+    if sound_options["sounds"] == False:
+        volume = 0
     else:
-        pygame.mixer.Sound.set_volume(click_sound, 0.5)
+        volume = default
+    return volume
 
-    arrow_right = pygame.image.load(r'Images/arrow_right_icon.png')
-    arrow_left = pygame.image.load(r'Images/arrow_left_icon.png')
-
-    # Buttons for muting the music
-    left_music_button = menu_button.Custom_Button(x=button_base_x, y=button_base_y, image=arrow_left)
-    right_music_button = menu_button.Custom_Button(x=button_base_x + 100, y=button_base_y + 100, image=arrow_right)
-
-    if left_music_button.draw_custom_button(screen):
-        pygame.mixer.Sound.play(click_sound)
-        options = toggle_volume_sound(options)
-        pygame.time.wait(20)
-        return options
-    
-    if right_music_button.draw_custom_button(screen):
-        pygame.mixer.Sound.play(click_sound)
-        return options
-
-def toggle_volume_sound(options):
+def toggle_volume_sound():
+    options = checkSounds()
     if options["sounds"] == False:
         options["sounds"] = True
     else:
@@ -141,7 +135,27 @@ def format_options(root, screen, options):
     sounds_rect.center = ((screen_width/4), 800)
     screen.blit(sounds_object, sounds_rect)
 
-    options = show_buttons(root, screen, options)
+    arrow_right = pygame.image.load(r'Images/arrow_right_icon.png')
+    arrow_left = pygame.image.load(r'Images/arrow_left_icon.png')
+
+    # Buttons for muting the music
+    left_music_button = menu_button.Custom_Button(x=button_base_x, y=button_base_y, image=arrow_left)
+    right_music_button = menu_button.Custom_Button(x=button_base_x + 100, y=button_base_y + 100, image=arrow_right)
+
+    # Menu Noises
+    click_sound = pygame.mixer.Sound(r'Sounds/click_sound.wav')
+    volume = control_sound_volume(0.5)
+    pygame.mixer.Sound.set_volume(click_sound, volume)
+
+    if left_music_button.draw_custom_button(screen):
+        options = toggle_volume_sound()
+        volume = control_sound_volume(0.5)
+        pygame.mixer.Sound.set_volume(click_sound, volume)
+        pygame.mixer.Sound.play(click_sound)
+        pygame.time.wait(200)
+    
+    if right_music_button.draw_custom_button(screen):
+        pygame.mixer.Sound.play(click_sound)
 
 def display_options_menu(root, screen, options):
     # Main loop that controls the options page
@@ -163,7 +177,8 @@ def display_options_menu(root, screen, options):
 
         # Menu Noises
         click_sound = pygame.mixer.Sound(r'Sounds/click_sound.wav')
-        pygame.mixer.Sound.set_volume(click_sound, 0.5)
+        volume = control_sound_volume(0.5)
+        pygame.mixer.Sound.set_volume(click_sound, volume)
         
         # Back to main menu button
         width = root.winfo_screenwidth()

@@ -20,6 +20,7 @@ import sys
 import menu_button
 from pygame.locals import *
 from scores import scores_setup, load_scores
+from options import control_sound_volume
 
 # Setting up window
 pygame.init()
@@ -296,7 +297,8 @@ def display_leaderboard(root, screen):
 
         # Menu Noises
         click_sound = pygame.mixer.Sound(r'Sounds/click_sound.wav')
-        pygame.mixer.Sound.set_volume(click_sound, 0.5)
+        volume = control_sound_volume(0.5)
+        pygame.mixer.Sound.set_volume(click_sound, volume)
         
         # Back to main menu button
         #menu_boat_image = pygame.image.load(r'Images/Menu_Boat.png').convert_alpha()

@@ -15,7 +15,7 @@ import scores
 import Graph
 from pygame.locals import *
 from leaderboard import display_leaderboard
-from options import display_options_menu
+from options import display_options_menu, checkSounds, control_sound_volume
 from simulation import run_simulation, check_unit_conflicts
 
 # Main window
@@ -80,27 +80,10 @@ def handleEvents():
                 sys.exit() # not sure how necessary/bad this is but I had to use it for game to close properly
                 running = False
 
-# Sounds
-try:
-    with open("./options.json", "r+", encoding="utf-8") as f:
-        sound_options = json.load(f)
-
-except FileNotFoundError:
-    sound_options = {
-                        "music": True,
-                        "sounds": True       
-                    }
-
-    f = open("./options.json", "w") # Create the new local storage file
-    json.dump(sound_options, f, indent=4) # Save the data to the new json file
-
 # Game Music, loop by setting -1 as the .play() 'loops' param
 pygame.mixer.music.load(r'Sounds/game_music.wav')
 pygame.mixer.music.set_volume(0.7)
 pygame.mixer.music.play(-1)
-# Menu Noises
-click_sound = pygame.mixer.Sound(r'Sounds/click_sound.wav')
-pygame.mixer.Sound.set_volume(click_sound, 0.5)
 
 # Images
 title_image = pygame.image.load(r'Images/River_Crossing_Title.png').convert_alpha()
@@ -111,6 +94,9 @@ hard_image = pygame.image.load(r'Images/Hard_Button.png').convert_alpha()
 options_image = pygame.image.load(r'Images/Options_Button.png').convert_alpha()
 instructions_image = pygame.image.load(r'Images/Instructions_Button.png').convert_alpha()
 credits_image = pygame.image.load(r'Images/Credit_Button.png').convert_alpha()
+
+# Menu Noises
+click_sound = pygame.mixer.Sound(r'Sounds/click_sound.wav')
 
 # Buttons
 easy_button = menu_button.Button(menu_button_image_location_x, easy_button_image_location_y, easy_image)
@@ -123,6 +109,9 @@ credits_button = menu_button.Button(menu_button_image_location_x, credits_button
 # The Main Menu Loop
 run = True
 while run:
+    sound_options = checkSounds() # Check the external sound option values
+    volume = control_sound_volume(0.5)
+    pygame.mixer.Sound.set_volume(click_sound, volume)
     handleEvents()
 
     screen.fill(green)
