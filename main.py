@@ -82,7 +82,11 @@ def handleEvents():
 
 # Game Music, loop by setting -1 as the .play() 'loops' param
 pygame.mixer.music.load(r'Sounds/game_music.wav')
-pygame.mixer.music.set_volume(0.7)
+sound_options = checkSounds()
+if sound_options["music"] == False:
+    pygame.mixer.music.set_volume(0)
+else:
+    pygame.mixer.music.set_volume(0.7)
 pygame.mixer.music.play(-1)
 
 # Images
