@@ -1,10 +1,4 @@
-# As of right now the user feedback in terms of whether boat can/cannot cross, 
-# when boat is crossing and with what, and when game is won, are all in console
-#
-# To do: Adding support for more than 1 game graph
-#        Also a ton of UI/graphics stuff like swapping bottom arrow left/right, adding labels, arranging units
-#        better, highlighting which units are in conflict, and animations.
-
+# Andrew Morris
 # Sound Sources: 
 # game_music: https://freesound.org/people/FoolBoyMedia/sounds/257997/
 # click_sound: https://freesound.org/people/brandondelehoy/sounds/333428/
@@ -17,6 +11,7 @@ import pygame
 import menu_button
 import scores
 import Graph
+import options
 
 #set up screen
 pygame.init()
@@ -33,43 +28,38 @@ red = (240, 0, 0)
 font = pygame.font.Font('freesansbold.ttf', 36)
 small_font = pygame.font.Font('freesansbold.ttf', 24)
 
-# Sounds
+# Sounds  
 click_sound = pygame.mixer.Sound(r'Sounds/click_sound.wav')
-pygame.mixer.Sound.set_volume(click_sound, 0.5)
 victory_sound = pygame.mixer.Sound(r'Sounds/victory_sound.wav')
-pygame.mixer.Sound.set_volume(victory_sound, 0.8)
 cancel_sound = pygame.mixer.Sound(r'Sounds/cancel_sound.wav')
-pygame.mixer.Sound.set_volume(cancel_sound, 0.5)
 water_sound = pygame.mixer.Sound(r'Sounds/water_sound.wav')
-
 
 # Images
 # Unit Images
-fox_icon = pygame.image.load(r'Images/fox_icon.png')
-wolf_icon = pygame.image.load(r'Images/wolf_icon.png')
-snake_icon = pygame.image.load(r'Images/snake_icon.png')
-rabbit_icon = pygame.image.load(r'Images/rabbit_icon.png')
-goat_icon = pygame.image.load(r'Images/goat_icon.png')
-monkey_icon = pygame.image.load(r'Images/monkey_icon.png')
-owl_icon = pygame.image.load(r'Images/owl_icon.png')
-cow_icon = pygame.image.load(r'Images/cow_icon.png')
-sheep_icon = pygame.image.load(r'Images/sheep_icon.png')
-cat_icon = pygame.image.load(r'Images/cat_icon.png')
-dog_icon = pygame.image.load(r'Images/dog_icon.png')
-mouse_icon = pygame.image.load(r'Images/mouse_icon.png')
-chicken_icon = pygame.image.load(r'Images/chicken_icon.png')
-goose_icon = pygame.image.load(r'Images/goose_icon.png')
-squirrel_icon = pygame.image.load(r'Images/squirrel_icon.png')
-frog_icon = pygame.image.load(r'Images/frog_icon.png')
-bug_icon = pygame.image.load(r'Images/bug_icon.png')
-grass_icon = pygame.image.load(r'Images/grass_icon.png')
-carrot_icon = pygame.image.load(r'Images/carrot_icon.png')
-cheese_icon = pygame.image.load(r'Images/cheese_icon.png')
-seeds_icon = pygame.image.load(r'Images/seeds_icon.png')
-broccoli_icon = pygame.image.load(r'Images/broccoli_icon.png')
-banana_icon = pygame.image.load(r'Images/banana_icon.png')
-fruit_icon = pygame.image.load(r'Images/fruit_icon.png')
-nuts_icon = pygame.image.load(r'Images/nuts_icon.png')
+fox_icon = pygame.image.load(r'Images/Units/Fox.png')
+wolf_icon = pygame.image.load(r'Images/Units/Wolf.png')
+snake_icon = pygame.image.load(r'Images/Units/Snake.png')
+rabbit_icon = pygame.image.load(r'Images/Units/Rabbit.png')
+goat_icon = pygame.image.load(r'Images/Units/Goat.png')
+monkey_icon = pygame.image.load(r'Images/Units/Monkey.png')
+owl_icon = pygame.image.load(r'Images/Units/Owl.png')
+sheep_icon = pygame.image.load(r'Images/Units/Sheep.png')
+cat_icon = pygame.image.load(r'Images/Units/Cat.png')
+dog_icon = pygame.image.load(r'Images/Units/Dog.png')
+mouse_icon = pygame.image.load(r'Images/Units/Mouse.png')
+chicken_icon = pygame.image.load(r'Images/Units/Chicken.png')
+goose_icon = pygame.image.load(r'Images/Units/Goose.png')
+squirrel_icon = pygame.image.load(r'Images/Units/Squirrel.png')
+frog_icon = pygame.image.load(r'Images/Units/Frog.png')
+bug_icon = pygame.image.load(r'Images/Units/Bug.png')
+grass_icon = pygame.image.load(r'Images/Units/Grass.png')
+carrot_icon = pygame.image.load(r'Images/Units/Carrot.png')
+cheese_icon = pygame.image.load(r'Images/Units/Cheese.png')
+seeds_icon = pygame.image.load(r'Images/Units/Seeds.png')
+broccoli_icon = pygame.image.load(r'Images/Units/Broccoli.png')
+banana_icon = pygame.image.load(r'Images/Units/Banana.png')
+fruit_icon = pygame.image.load(r'Images/Units/Fruit.png')
+nuts_icon = pygame.image.load(r'Images/Units/Nuts.png')
 # Other Images
 arrow_right_image = pygame.image.load(r'Images/arrow_right_icon.png')
 arrow_left_image = pygame.image.load(r'Images/arrow_left_icon.png')
@@ -85,7 +75,6 @@ unit_images = {"Fox": fox_icon,
                "Goat": goat_icon,
                "Monkey": monkey_icon,
                "Owl": owl_icon,
-               "Cow": cow_icon,
                "Sheep": sheep_icon,
                "Cat": cat_icon,
                "Dog": dog_icon,
@@ -222,6 +211,12 @@ def check_unit_conflicts(left_side, right_side, side, unit_graph):
 
 # Game simulation function, contains main game simulation loop, returns turns used after game is won
 def run_simulation(game_graph, boat_size):
+    volume = options.control_sound_volume(0.6)
+    pygame.mixer.Sound.set_volume(click_sound, volume)
+    pygame.mixer.Sound.set_volume(victory_sound, volume)
+    pygame.mixer.Sound.set_volume(cancel_sound, volume)
+    pygame.mixer.Sound.set_volume(water_sound, volume)
+    
     unit_graph = game_graph
     
     # Hold buttons for the possible units 
@@ -254,26 +249,26 @@ def run_simulation(game_graph, boat_size):
         # Generate buttons for every possible unit and available positions for each unit
         left_count = 0
         for unit in left_side.units:
-            left_button = menu_button.Unit_Button(unit, left_side_x, screen_height * (0.2 + (left_count / 15)), unit_images[unit])
+            left_button = menu_button.Unit_Button(unit, left_side_x, screen_height * (0.15 + (left_count / 11)), unit_images[unit])
             unit_buttons_left[unit] = (left_button)
             left_count += 1
 
         right_count = 0
         for unit in right_side.units:
-            right_button = menu_button.Unit_Button(unit, right_side_x, screen_height * (0.2 + (right_count / 15)), unit_images[unit])
+            right_button = menu_button.Unit_Button(unit, right_side_x, screen_height * (0.15 + (right_count / 11)), unit_images[unit])
             unit_buttons_right[unit] = (right_button)
             right_count += 1
             
         boat_count = 0
         for unit in boat.units:
             if boat.side == 0:
-                boat_button = menu_button.Unit_Button(unit, screen_width * 0.34, screen_height * (0.5 + (boat_count / 15)), unit_images[unit])
+                boat_button = menu_button.Unit_Button(unit, screen_width * 0.34, screen_height * (0.45 + (boat_count / 11)), unit_images[unit])
             else:
-                boat_button = menu_button.Unit_Button(unit, screen_width * 0.68, screen_height * (0.5 + (boat_count / 15)), unit_images[unit])
+                boat_button = menu_button.Unit_Button(unit, screen_width * 0.68, screen_height * (0.45 + (boat_count / 11)), unit_images[unit])
             unit_buttons_boat[unit] = (boat_button)
             boat_count += 1
 
-        # Handle user input
+        # Handle pygame events
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 sys.exit()
@@ -282,13 +277,13 @@ def run_simulation(game_graph, boat_size):
                     turn_count = -1
                     run = False
         
-        pygame.time.wait(20)
+        pygame.time.wait(40)
         clicked = False
         # Main logic for moving units around based on graphical user input, before attempting to cross river            
         for unit in unit_graph:
             if left_side.units.__contains__(unit):
                 if unit_buttons_left[unit].draw_unit(screen) and clicked == False:
-                    pygame.time.wait(150)
+                    pygame.time.wait(80)
                     clicked = True
                     
                     if len(boat.units) < boat.size and boat.side == 0:
@@ -297,7 +292,7 @@ def run_simulation(game_graph, boat_size):
                         boat.units.append(unit)
             elif right_side.units.__contains__(unit):
                 if unit_buttons_right[unit].draw_unit(screen) and clicked == False:
-                    pygame.time.wait(150)
+                    pygame.time.wait(80)
                     clicked = True
                     
                     if len(boat.units) < boat.size and boat.side == 1:
@@ -306,7 +301,7 @@ def run_simulation(game_graph, boat_size):
                         boat.units.append(unit)
             elif boat.units.__contains__(unit):
                 if unit_buttons_boat[unit].draw_unit(screen) and clicked == False:
-                    pygame.time.wait(150)
+                    pygame.time.wait(80)
                     clicked = True
                     
                     pygame.mixer.Sound.play(click_sound)
@@ -347,7 +342,7 @@ def run_simulation(game_graph, boat_size):
 
             run = False
 
-        pygame.time.wait(20)
         pygame.display.update()
-        
+    
+    pygame.mixer.Sound.stop(water_sound)
     return turn_count

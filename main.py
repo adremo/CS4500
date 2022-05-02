@@ -59,11 +59,11 @@ grass_location2_y = screen_height * .46
 grass_location3_x = screen_width * .78
 grass_location3_y = screen_height * .34
 menu_button_image_location_x = screen_width * .43
-easy_button_image_location_y = screen_height * .25
-hard_button_image_location_y = screen_height * .32
-options_button_image_location_y = screen_height * .39
-instructions_button_image_location_y = screen_height * .46
-credits_button_image_location_y = screen_height * .53
+easy_button_image_location_y = screen_height * .22
+hard_button_image_location_y = screen_height * .31
+options_button_image_location_y = screen_height * .40
+instructions_button_image_location_y = screen_height * .49
+leaderboard_button_image_location_y = screen_height * .58
 
 
 def close():
@@ -97,7 +97,7 @@ easy_image = pygame.image.load(r'Images/Easy_Button.png').convert_alpha()
 hard_image = pygame.image.load(r'Images/Hard_Button.png').convert_alpha()
 options_image = pygame.image.load(r'Images/Options_Button.png').convert_alpha()
 instructions_image = pygame.image.load(r'Images/Instructions_Button.png').convert_alpha()
-credits_image = pygame.image.load(r'Images/Credit_Button.png').convert_alpha()
+leaderboard_image = pygame.image.load(r'Images/Leaderboard_Button.png').convert_alpha()
 
 # Menu Noises
 click_sound = pygame.mixer.Sound(r'Sounds/click_sound.wav')
@@ -108,7 +108,7 @@ hard_button = menu_button.Button(menu_button_image_location_x, hard_button_image
 options_button = menu_button.Button(menu_button_image_location_x, options_button_image_location_y, options_image)
 instructions_button = menu_button.Button(menu_button_image_location_x, instructions_button_image_location_y,
                                          instructions_image)
-credits_button = menu_button.Button(menu_button_image_location_x, credits_button_image_location_y, credits_image)
+leaderboard_button = menu_button.Button(menu_button_image_location_x, leaderboard_button_image_location_y, leaderboard_image)
 
 # The Main Menu Loop
 run = True
@@ -174,7 +174,7 @@ while run:
         pygame.mixer.Sound.play(click_sound)
         run = False
 
-    if credits_button.draw(screen):
+    if leaderboard_button.draw(screen):
         pygame.mixer.Sound.play(click_sound)
         display_leaderboard(root=root, screen=screen)
 

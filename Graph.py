@@ -14,7 +14,7 @@ class Graph:
         self.presets = {
             #Eats Many
             "Fox":["Chicken", "Rabbit", "Goose", "Squirrel", "Mouse"],
-            "Wolf": ["Cow", "Sheep", "Rabbit", "Goose", "Goat", "Chicken"],
+            "Wolf": ["Sheep", "Rabbit", "Goose", "Goat", "Chicken"],
             "Snake": ["Rabbit", "Mouse", "Squirrel", "Frog"],
 
 
@@ -25,7 +25,6 @@ class Graph:
             "Owl": ["Mouse", "Squirrel"],
 
             #Eats One
-            "Cow": ["Grass"],
             "Sheep": ["Grass"],
             "Cat": ["Mouse"],
             "Dog": ["Cat"],

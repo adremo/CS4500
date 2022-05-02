@@ -13,7 +13,7 @@ class Button:
     def __init__(self, x, y, image):
         width = root.winfo_screenwidth()
         height = root.winfo_screenheight()
-        self.image = pygame.transform.scale(image, (int(width * .11), int(height * .07)))
+        self.image = pygame.transform.scale(image, (int(width * .14), int(height * .08)))
         self.rect = self.image.get_rect()
         self.rect.topleft = (x, y)
         self.clicked = False
@@ -31,6 +31,7 @@ class Button:
 
             if pygame.mouse.get_pressed()[0] == 1 and self.clicked == False:
                 print('clicked')
+                pygame.time.wait(60)
                 self.clicked = True
                 action = True
         if pygame.mouse.get_pressed()[0] == 0:
@@ -45,7 +46,7 @@ class Unit_Button:
         width = root.winfo_screenwidth()
         height = root.winfo_screenheight()
         self.name = name
-        self.image = pygame.transform.scale(image, (int(width * .04), int(height * .06)))
+        self.image = pygame.transform.scale(image, (int(width * .06), int(height * .09)))
         self.rect = self.image.get_rect()
         self.rect.topleft = (x, y)
         self.clicked = False
@@ -60,6 +61,7 @@ class Unit_Button:
 
             if pygame.mouse.get_pressed()[0] == 1 and self.clicked == False:
                 print('clicked on ' + str(self.name))
+                pygame.time.wait(60)
                 self.clicked = True
                 action = True
         if pygame.mouse.get_pressed()[0] == 0:
@@ -139,14 +141,16 @@ class Custom_Button:
 
             if self.optional_hover_image is not None:
                 self.confirmed_hover_image = pygame.transform.scale(self.optional_hover_image, (int(width * .04), int(height * .06)))
-                surface.blit(self.confirmed_hover_image, (self.rect.x * 1.35, self.rect.y))
+                surface.blit(self.confirmed_hover_image, (self.rect.x, self.rect.y))
 
             if pygame.mouse.get_pressed()[0] == 1 and self.clicked == False:
                 self.clicked = True
                 action = True
+        else:
+            surface.blit(self.image, (self.rect.x, self.rect.y))
+
         if pygame.mouse.get_pressed()[0] == 0:
             self.clicked = False
 
-        surface.blit(self.image, (self.rect.x, self.rect.y))
 
         return action
