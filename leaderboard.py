@@ -125,13 +125,13 @@ def format_leaderboard(root, screen):
         message_text_easy = "No data"
         
         # Draw surface
-        easy_message_zone = Rect(100, starting_offset, entry_x_offset_easy, 700)
+        easy_message_zone = Rect((screen_width * .05), starting_offset, entry_x_offset_easy, (screen_height * .7))
         pygame.draw.rect(screen, MESSAGE_BACKGROUND_COLOR, easy_message_zone)
 
         # Display message
         message_object_easy = subheader_font.render(message_text_easy, True, TEXT_COLOR, MESSAGE_BACKGROUND_COLOR)
         message_rect_easy = message_object_easy.get_rect()
-        message_rect_easy.center = ((screen_width/4), 600)
+        message_rect_easy.center = ((screen_width/4), (screen_height * .55))
         screen.blit(message_object_easy, message_rect_easy)
 
     else:
@@ -203,13 +203,13 @@ def format_leaderboard(root, screen):
         message_text_hard = "No data"
         
         # Draw surface
-        hard_message_zone = Rect(100 + x_offset, starting_offset, entry_x_offset_hard, 700)
+        hard_message_zone = Rect((screen_width * .0715) + x_offset, starting_offset, entry_x_offset_hard, (screen_height * .7))
         pygame.draw.rect(screen, MESSAGE_BACKGROUND_COLOR, hard_message_zone)
 
         # Display message
         message_object_hard = subheader_font.render(message_text_hard, True, TEXT_COLOR, MESSAGE_BACKGROUND_COLOR)
         message_rect_hard = message_object_hard.get_rect()
-        message_rect_hard.center = ((screen_width/4) + x_offset, 600)
+        message_rect_hard.center = ((screen_width * .725), (screen_height * .55))
         screen.blit(message_object_hard, message_rect_hard)
 
     else:
