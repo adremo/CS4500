@@ -14,6 +14,7 @@ import menu_button
 import scores
 import Graph
 from pygame.locals import *
+from instructions import display_help_menu
 from leaderboard import display_leaderboard
 from options import display_options_menu, checkSounds, control_sound_volume
 from simulation import run_simulation, check_unit_conflicts
@@ -172,7 +173,7 @@ while run:
 
     if instructions_button.draw(screen):
         pygame.mixer.Sound.play(click_sound)
-        run = False
+        display_help_menu(root=root, screen=screen)
 
     if leaderboard_button.draw(screen):
         pygame.mixer.Sound.play(click_sound)
