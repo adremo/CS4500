@@ -55,22 +55,18 @@ def format_help(root, screen):
     # Font
     header_font = pygame.font.SysFont(None, 120)
     subheader_font = pygame.font.SysFont(None, 50)
-    entry_font = pygame.font.SysFont(None, 40)
+    content_font = pygame.font.SysFont(None, 40)
 
     # Surface building and positioning
-    button_offset = 100
-    x_offset = 900
-    y_offset = 50
-    starting_offset = 165 + (y_offset * 2.5)
     screen_width = root.winfo_screenwidth()
-    screen_height = root.winfo_screenheight() 
-    button_base_x = (screen_width/3) + 200
-    button_base_y = 475
-    background_sub_rect = Rect(50, (screen_height/2) - 500, screen_width - 100, 1000)
-    header_zone = Rect(100, 100, screen_width - 200, 150)
-    #content_zone = Rect(100, starting_offset, screen_width - 200, 700)
-    content_zone_left = Rect(100, starting_offset, (screen_width/2) - 140, 700)
-    content_zone_right = Rect(960, starting_offset, (screen_width/2) - 100, 700)
+    screen_height = root.winfo_screenheight()
+    x_offset = (screen_width * .45)
+    y_offset = (screen_height * .047)
+    starting_offset = (screen_height * .1125) + (y_offset * 2.5) 
+    background_sub_rect = Rect(screen_width/25, screen_height/20, screen_width - (screen_width/12), screen_height - (screen_height/10))
+    header_zone = Rect(screen_width/16, screen_height/11, (screen_width * .875), screen_height - (screen_height/1.15))
+    content_zone_left = Rect(screen_width/16, starting_offset, (screen_width * .425), (screen_height * .7))
+    content_zone_right = Rect((screen_width * .5), starting_offset, (screen_width * .4375), (screen_height * .7))
 
     # Header text
     header_text = "Instructions:"
@@ -101,29 +97,29 @@ def format_help(root, screen):
     # Fill in the header information
     header_object = header_font.render(header_text, True, TEXT_COLOR, HEADER_COLOR)
     header_rect = header_object.get_rect()
-    header_rect.center = ((screen_width/2), 175)
+    header_rect.center = ((screen_width/2), (screen_height * .15))
     screen.blit(header_object, header_rect)
 
     # Fill in the subheader information
     subheader_object_left = subheader_font.render(subheader_text_left, True, TEXT_COLOR, SUBHEADER_COLOR_LEFT)
     subheader_rect_left = subheader_object_left.get_rect()
-    subheader_rect_left.center = ((screen_width/4), 325)
+    subheader_rect_left.center = ((screen_width/4), (screen_height * .26))
     screen.blit(subheader_object_left, subheader_rect_left)
 
     subheader_object_right = subheader_font.render(subheader_text_right, True, TEXT_COLOR, SUBHEADER_COLOR_RIGHT)
     subheader_rect_right = subheader_object_right.get_rect()
-    subheader_rect_right.center = ((screen_width/4) + x_offset, 325)
+    subheader_rect_right.center = ((screen_width/4) + x_offset, (screen_height * .26))
     screen.blit(subheader_object_right, subheader_rect_right)
 
     # Fill in the text contents
     content_object_left = subheader_font.render(content_text_left, True, TEXT_COLOR, MESSAGE_BACKGROUND_COLOR)
     content_rect_left = content_object_left.get_rect()
-    content_rect_left.center = ((screen_width/4), 600)
-    screen.blit(content_object_left, content_rect_left)
+    content_rect_left.center = ((screen_width/4), (screen_height * .55))
+    #screen.blit(content_object_left, content_rect_left)
 
     content_object_right = subheader_font.render(content_text_right, True, TEXT_COLOR, MESSAGE_BACKGROUND_COLOR)
     content_rect_right = content_object_right.get_rect()
-    content_rect_right.center = ((screen_width/4) + x_offset, 600)
+    content_rect_right.center = ((screen_width/4) + x_offset, (screen_height * .55))
     screen.blit(content_object_right, content_rect_right)
 
 def display_help_menu(root, screen):
