@@ -62,19 +62,19 @@ def format_leaderboard(root, screen):
     entry_font = pygame.font.SysFont(None, 40)
 
     # Surface building and positioning
-    x_offset = 900
-    y_offset = 50
-    starting_offset = 165 + (y_offset * 2.5)
     screen_width = root.winfo_screenwidth()
-    screen_height = root.winfo_screenheight() 
-    entry_x_offset_easy = (screen_width/2) - 200
-    entry_x_offset_hard = (screen_width/2) - 150
-    easy_rect = Rect(50, (screen_height/2) - 500, (screen_width/2) - 100, 1000)
-    hard_rect = Rect(950, (screen_height/2) - 500, (screen_width/2) - 50, 1000)
-    header_zone_easy = Rect(100, 100, (screen_width/2) - 200, 100)
-    header_zone_hard = Rect(1000, 100, (screen_width/2) - 150, 100)
-    subheader_zone_easy = Rect(100, 210, (screen_width/2) - 200, 70)
-    subheader_zone_hard = Rect(1000, 210, (screen_width/2) - 150, 70)
+    screen_height = root.winfo_screenheight()
+    x_offset = (screen_width * .45)
+    y_offset = (screen_height * .047)
+    starting_offset = (screen_height * .1125) + (y_offset * 2.5) 
+    entry_x_offset_easy = (screen_width/2) - (screen_width * .1)
+    entry_x_offset_hard = (screen_width/2) - (screen_width * .0725)
+    easy_rect = Rect((screen_width * .025), (screen_height/2) - (screen_height * .47), (screen_width/2) - (screen_width * .05), (screen_height * .935))
+    hard_rect = Rect((screen_width * .5) - (screen_width * .005), (screen_height/2) - (screen_height * .47), (screen_width/2) - (screen_width * .025), (screen_height * .935))
+    header_zone_easy = Rect((screen_width * .05), (screen_height * .075), (screen_width/2) - (screen_width * .1), (screen_height * .075))
+    header_zone_hard = Rect((screen_width * .52), (screen_height * .075), (screen_width/2) - (screen_width * .075), (screen_height * .075))
+    subheader_zone_easy = Rect((screen_width * .05), (screen_height * .165), (screen_width/2) - (screen_width * .1), (screen_height * .0525))
+    subheader_zone_hard = Rect((screen_width * .52), (screen_height * .165), (screen_width/2) - (screen_width * .075), (screen_height * .0525))
 
     # Header text
     header_text_easy = "Best Scores: Easy Difficulty"
@@ -96,23 +96,23 @@ def format_leaderboard(root, screen):
     # Fill in the header information
     header_object_easy = header_font.render(header_text_easy, True, TEXT_COLOR, HEADER_COLOR_EASY)
     header_rect_easy = header_object_easy.get_rect()
-    header_rect_easy.center = ((screen_width/4), 150)
+    header_rect_easy.center = ((screen_width/4), (screen_height * .12))
     screen.blit(header_object_easy, header_rect_easy)
 
     header_object_hard = header_font.render(header_text_hard, True, TEXT_COLOR, HEADER_COLOR_HARD)
     header_rect_hard = header_object_hard.get_rect()
-    header_rect_hard.center = ((screen_width/4) + x_offset, 150)
+    header_rect_hard.center = ((screen_width/4) + (screen_width * .475), (screen_height * .12))
     screen.blit(header_object_hard, header_rect_hard)
 
     # Fill in the subheader information
     subheader_object_easy = subheader_font.render(subheader_text, True, TEXT_COLOR, SUBHEADER_COLOR_EASY)
     subheader_rect_easy = subheader_object_easy.get_rect()
-    subheader_rect_easy.center = ((screen_width/4), 245)
+    subheader_rect_easy.center = ((screen_width/4), (screen_height * .19))
     screen.blit(subheader_object_easy, subheader_rect_easy)
 
     subheader_object_hard = subheader_font.render(subheader_text, True, TEXT_COLOR, SUBHEADER_COLOR_HARD)
     subheader_rect_hard = subheader_object_hard.get_rect()
-    subheader_rect_hard.center = ((screen_width/4) + x_offset, 245)
+    subheader_rect_hard.center = ((screen_width/4) + (screen_width * .475), (screen_height * .19))
     screen.blit(subheader_object_hard, subheader_rect_hard)
 
     # Load scores into local memory
@@ -125,13 +125,13 @@ def format_leaderboard(root, screen):
         message_text_easy = "No data"
         
         # Draw surface
-        easy_message_zone = Rect(100, starting_offset, entry_x_offset_easy, 700)
+        easy_message_zone = Rect((screen_width * .05), starting_offset, entry_x_offset_easy, (screen_height * .7))
         pygame.draw.rect(screen, MESSAGE_BACKGROUND_COLOR, easy_message_zone)
 
         # Display message
         message_object_easy = subheader_font.render(message_text_easy, True, TEXT_COLOR, MESSAGE_BACKGROUND_COLOR)
         message_rect_easy = message_object_easy.get_rect()
-        message_rect_easy.center = ((screen_width/4), 600)
+        message_rect_easy.center = ((screen_width/4), (screen_height * .55))
         screen.blit(message_object_easy, message_rect_easy)
 
     else:
@@ -159,14 +159,14 @@ def format_leaderboard(root, screen):
                 zone_color_easy = ENTRY_BACKGROUND_2
             
             # Draw the entry zones
-            entry_zone_easy = Rect(100, starting_offset + (x * y_offset), entry_x_offset_easy, 45)
+            entry_zone_easy = Rect((screen_width * .05), starting_offset + (x * y_offset), entry_x_offset_easy, (screen_height * .0425))
             pygame.draw.rect(screen, zone_color_easy, entry_zone_easy)
 
             # Render rank data
             rank_text_easy = "#" + str(x + 1)
             rank_object_easy = entry_font.render(rank_text_easy, True, TEXT_COLOR, zone_color_easy)
             rank_rect_easy = rank_object_easy.get_rect()
-            rank_rect_easy.center = ((screen_width/4) - 300, 310 + (x * y_offset))
+            rank_rect_easy.center = ((screen_width/4) - (screen_width * .15), (screen_height * .25) + (x * y_offset))
             screen.blit(rank_object_easy, rank_rect_easy)
 
             # Determine name field data
@@ -180,7 +180,7 @@ def format_leaderboard(root, screen):
             # Render name data
             name_object_easy = entry_font.render(name_data_easy, True, TEXT_COLOR, zone_color_easy)
             name_rect_easy = name_object_easy.get_rect()
-            name_rect_easy.center = ((screen_width/4), 310 + (x * y_offset))
+            name_rect_easy.center = ((screen_width/4), (screen_height * .25) + (x * y_offset))
             screen.blit(name_object_easy, name_rect_easy)
 
             # Determine score field data
@@ -195,7 +195,7 @@ def format_leaderboard(root, screen):
             # Render score data
             score_object_easy = entry_font.render(score_data_easy, True, TEXT_COLOR, zone_color_easy)
             score_rect_easy = score_object_easy.get_rect()
-            score_rect_easy.center = ((screen_width/4) + 300, 310 + (x * y_offset))
+            score_rect_easy.center = ((screen_width/4) + (screen_width * .15), (screen_height * .25) + (x * y_offset))
             screen.blit(score_object_easy, score_rect_easy)
 
     if len(scores_hard) == 0:
@@ -203,13 +203,13 @@ def format_leaderboard(root, screen):
         message_text_hard = "No data"
         
         # Draw surface
-        hard_message_zone = Rect(100 + x_offset, starting_offset, entry_x_offset_hard, 700)
+        hard_message_zone = Rect((screen_width * .0715) + x_offset, starting_offset, entry_x_offset_hard, (screen_height * .7))
         pygame.draw.rect(screen, MESSAGE_BACKGROUND_COLOR, hard_message_zone)
 
         # Display message
         message_object_hard = subheader_font.render(message_text_hard, True, TEXT_COLOR, MESSAGE_BACKGROUND_COLOR)
         message_rect_hard = message_object_hard.get_rect()
-        message_rect_hard.center = ((screen_width/4) + x_offset, 600)
+        message_rect_hard.center = ((screen_width * .725), (screen_height * .55))
         screen.blit(message_object_hard, message_rect_hard)
 
     else:
@@ -237,14 +237,14 @@ def format_leaderboard(root, screen):
                 zone_color_hard = ENTRY_BACKGROUND_2
         
             # Draw the entry zones
-            entry_zone_hard = Rect(100 + x_offset, starting_offset + (x * y_offset), entry_x_offset_hard, 45)
+            entry_zone_hard = Rect((screen_width * .07) + x_offset, starting_offset + (x * y_offset), entry_x_offset_hard, (screen_height * .0425))
             pygame.draw.rect(screen, zone_color_hard, entry_zone_hard)
 
             # Render rank data
             rank_text_hard = "#" + str(x + 1)
             rank_object_hard = entry_font.render(rank_text_hard, True, TEXT_COLOR, zone_color_hard)
             rank_rect_hard = rank_object_hard.get_rect()
-            rank_rect_hard.center = ((screen_width/4) - 300 + x_offset, 310 + (x * y_offset))
+            rank_rect_hard.center = ((screen_width/4) - (screen_width * .125) + x_offset, (screen_height * .25) + (x * y_offset))
             screen.blit(rank_object_hard, rank_rect_hard)
 
             # Determine name field data
@@ -258,7 +258,7 @@ def format_leaderboard(root, screen):
             # Render name data
             name_object_hard = entry_font.render(name_data_hard, True, TEXT_COLOR, zone_color_hard)
             name_rect_hard = name_object_hard.get_rect()
-            name_rect_hard.center = ((screen_width/4) + x_offset, 310 + (x * y_offset))
+            name_rect_hard.center = ((screen_width/4) + (screen_width * .475), (screen_height * .25) + (x * y_offset))
             screen.blit(name_object_hard, name_rect_hard)
 
             # Determine score field data
@@ -273,7 +273,7 @@ def format_leaderboard(root, screen):
             # Render score data
             score_object_hard = entry_font.render(score_data_hard, True, TEXT_COLOR, zone_color_hard)
             score_rect_hard = score_object_hard.get_rect()
-            score_rect_hard.center = ((screen_width/4) + 300 + x_offset, 310 + (x * y_offset))
+            score_rect_hard.center = ((screen_width/4) + (screen_width * .175) + x_offset, (screen_height * .25) + (x * y_offset))
             screen.blit(score_object_hard, score_rect_hard)
 
 
