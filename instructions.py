@@ -44,17 +44,14 @@ def format_help(root, screen):
     SUB_BACKGROUND_COLOR = black
     TEXT_COLOR = Color(255, 255, 255)
     HEADER_COLOR = teal
-    HEADER_COLOR_HARD = teal
     SUBHEADER_COLOR_LEFT = teal
     SUBHEADER_COLOR_RIGHT = teal
-    MESSAGE_BACKGROUND_COLOR = black
-    ENTRY_BACKGROUND_1 = Color(54, 154, 181)
-    ENTRY_BACKGROUND_2 = light_teal
+    MESSAGE_BACKGROUND_COLOR = teal
 
     # Font
     header_font = pygame.font.SysFont(None, 120)
     subheader_font = pygame.font.SysFont(None, 50)
-    content_font = pygame.font.SysFont(None, 30)
+    content_font = pygame.font.SysFont(None, 32)
 
     # Surface building and positioning
     screen_width = root.winfo_screenwidth()
@@ -96,10 +93,10 @@ def format_help(root, screen):
     subheader_rect_right.center = ((screen_width/4) + x_offset, (screen_height * .26))
     screen.blit(subheader_object_right, subheader_rect_right)
 
-    #content_object_right = subheader_font.render(content_text_right, True, TEXT_COLOR, MESSAGE_BACKGROUND_COLOR)
-    #content_rect_right = content_object_right.get_rect()
-    #content_rect_right.center = ((screen_width/4) + x_offset, (screen_height * .55))
-    #screen.blit(content_object_right, content_rect_right)
+    # Images
+    graph_image = pygame.image.load(r'Images/Vertex_Cover_Example.png')
+    graph_image = pygame.transform.scale(graph_image, (screen_width * 0.25, screen_height * .25))
+    screen.blit(graph_image, (screen_width * 0.6, screen_height * .425))
 
     # Content text
     content_text_left = ["The goal of the game is to get all of the animals and plants from one",
@@ -114,6 +111,15 @@ def format_help(root, screen):
                          "Left click on the arrow at the bottom of the screen to send the boat",
                          "across the river and deposit its contents on the other side.",
                          "Try to get all of the cargo across the river in as few turns as possible!"]
+    
+    content_text_right_top = ["Certain animals and plants will conflict with each other if left on",
+                              "the same side of the river. We can visualize these conflicts using",
+                              "graphs. Below is an example of a graph:"]
+    
+    content_text_right_bottom = ["Each icon in the graph is a vertex, and the conflicts are represented",
+                                 "with lines connecting each conflicting vertex. The rabbit in the center",
+                                 "is a vertex cover, because removing it would eliminate all conflicts.",
+                                 "Aim to fill your boat with all of the vertex covers!"]
 
     # Fill in the text contents
     for line in content_text_left:
@@ -123,6 +129,22 @@ def format_help(root, screen):
         content_rect_left = content_object_left.get_rect()
         content_rect_left.topleft = ((screen_width * .1), (screen_height * .25) + (y_offset * counter))
         screen.blit(content_object_left, content_rect_left)
+    
+    for line in content_text_right_top:
+        counter = content_text_right_top.index(line) + 1
+
+        content_object_right_top = content_font.render(line, True, TEXT_COLOR, MESSAGE_BACKGROUND_COLOR)
+        content_rect_right_top = content_object_right_top.get_rect()
+        content_rect_right_top.topleft = ((screen_width * .525), (screen_height * .25) + (y_offset * counter))
+        screen.blit(content_object_right_top, content_rect_right_top)
+    
+    for line in content_text_right_bottom:
+        counter = content_text_right_bottom.index(line) + 1
+
+        content_object_right_bottom = content_font.render(line, True, TEXT_COLOR, MESSAGE_BACKGROUND_COLOR)
+        content_rect_right_bottom = content_object_right_bottom.get_rect()
+        content_rect_right_bottom.topleft = ((screen_width * .525), (screen_height * .65) + (y_offset * counter))
+        screen.blit(content_object_right_bottom, content_rect_right_bottom)
 
 def display_help_menu(root, screen):
     # Main loop that controls the options page
