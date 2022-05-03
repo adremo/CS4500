@@ -262,9 +262,9 @@ def run_simulation(game_graph, boat_size):
         boat_count = 0
         for unit in boat.units:
             if boat.side == 0:
-                boat_button = menu_button.Unit_Button(unit, screen_width * 0.34, screen_height * (0.45 + (boat_count / 11)), unit_images[unit])
+                boat_button = menu_button.Unit_Button(unit, screen_width * 0.34, screen_height * (0.5 + (boat_count / 11)), unit_images[unit])
             else:
-                boat_button = menu_button.Unit_Button(unit, screen_width * 0.68, screen_height * (0.45 + (boat_count / 11)), unit_images[unit])
+                boat_button = menu_button.Unit_Button(unit, screen_width * 0.68, screen_height * (0.5 + (boat_count / 11)), unit_images[unit])
             unit_buttons_boat[unit] = (boat_button)
             boat_count += 1
 
@@ -277,13 +277,13 @@ def run_simulation(game_graph, boat_size):
                     turn_count = -1
                     run = False
         
-        pygame.time.wait(40)
+        pygame.time.wait(20)
         clicked = False
         # Main logic for moving units around based on graphical user input, before attempting to cross river            
         for unit in unit_graph:
             if left_side.units.__contains__(unit):
                 if unit_buttons_left[unit].draw_unit(screen) and clicked == False:
-                    pygame.time.wait(80)
+                    pygame.time.wait(60)
                     clicked = True
                     
                     if len(boat.units) < boat.size and boat.side == 0:
@@ -292,7 +292,7 @@ def run_simulation(game_graph, boat_size):
                         boat.units.append(unit)
             elif right_side.units.__contains__(unit):
                 if unit_buttons_right[unit].draw_unit(screen) and clicked == False:
-                    pygame.time.wait(80)
+                    pygame.time.wait(60)
                     clicked = True
                     
                     if len(boat.units) < boat.size and boat.side == 1:
@@ -301,7 +301,7 @@ def run_simulation(game_graph, boat_size):
                         boat.units.append(unit)
             elif boat.units.__contains__(unit):
                 if unit_buttons_boat[unit].draw_unit(screen) and clicked == False:
-                    pygame.time.wait(80)
+                    pygame.time.wait(60)
                     clicked = True
                     
                     pygame.mixer.Sound.play(click_sound)
