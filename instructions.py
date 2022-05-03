@@ -46,9 +46,9 @@ def format_help(root, screen):
     TEXT_COLOR = Color(255, 255, 255)
     HEADER_COLOR = teal
     HEADER_COLOR_HARD = teal
-    SUBHEADER_COLOR_EASY = teal
-    SUBHEADER_COLOR_HARD = teal
-    MESSAGE_BACKGROUND_COLOR = teal
+    SUBHEADER_COLOR_LEFT = teal
+    SUBHEADER_COLOR_RIGHT = teal
+    MESSAGE_BACKGROUND_COLOR = black
     ENTRY_BACKGROUND_1 = Color(54, 154, 181)
     ENTRY_BACKGROUND_2 = light_teal
 
@@ -59,6 +59,7 @@ def format_help(root, screen):
 
     # Surface building and positioning
     button_offset = 100
+    x_offset = 900
     y_offset = 50
     starting_offset = 165 + (y_offset * 2.5)
     screen_width = root.winfo_screenwidth()
@@ -67,24 +68,63 @@ def format_help(root, screen):
     button_base_y = 475
     background_sub_rect = Rect(50, (screen_height/2) - 500, screen_width - 100, 1000)
     header_zone = Rect(100, 100, screen_width - 200, 150)
-    content_zone = Rect(100, starting_offset, screen_width - 200, 700)
+    #content_zone = Rect(100, starting_offset, screen_width - 200, 700)
+    content_zone_left = Rect(100, starting_offset, (screen_width/2) - 140, 700)
+    content_zone_right = Rect(960, starting_offset, (screen_width/2) - 100, 700)
 
     # Header text
     header_text = "Instructions:"
-    #music_text = "Music:"
-    #sounds_text = "Sounds:"
+    subheader_text_left = "How to Play:"
+    subheader_text_right = "Graphs and Vertex Covers:"
+
+    # Content text
+    content_text_left = """The goal of the game is to get all of the animals and plants
+                        from one side of the river to the other.\n\n
+                        Keyboard Controls:\n
+                        Esc - Go back to the Main Menu\n\n
+                        Mouse Controls:\n
+                        Left click on an animal or plant icon to add it to your boat.\n\n
+                        Left click on the arrow at the bottom of the screen to send the boat
+                        across the river and deposit its contents on the other side.\n\n
+                        Try to get all of the cargo across the river in as few turns as possible!"""
+    
+    content_text_right = "TBD"
 
     # Setting up the main surfaces
     screen.fill(BACKGROUND_COLOR)
     pygame.draw.rect(screen, SUB_BACKGROUND_COLOR, background_sub_rect)
     pygame.draw.rect(screen, HEADER_COLOR, header_zone)
-    pygame.draw.rect(screen, HEADER_COLOR, content_zone)
+    #pygame.draw.rect(screen, HEADER_COLOR, content_zone)
+    pygame.draw.rect(screen, SUBHEADER_COLOR_LEFT, content_zone_left)
+    pygame.draw.rect(screen, SUBHEADER_COLOR_RIGHT, content_zone_right)
 
     # Fill in the header information
     header_object = header_font.render(header_text, True, TEXT_COLOR, HEADER_COLOR)
     header_rect = header_object.get_rect()
     header_rect.center = ((screen_width/2), 175)
     screen.blit(header_object, header_rect)
+
+    # Fill in the subheader information
+    subheader_object_left = subheader_font.render(subheader_text_left, True, TEXT_COLOR, SUBHEADER_COLOR_LEFT)
+    subheader_rect_left = subheader_object_left.get_rect()
+    subheader_rect_left.center = ((screen_width/4), 325)
+    screen.blit(subheader_object_left, subheader_rect_left)
+
+    subheader_object_right = subheader_font.render(subheader_text_right, True, TEXT_COLOR, SUBHEADER_COLOR_RIGHT)
+    subheader_rect_right = subheader_object_right.get_rect()
+    subheader_rect_right.center = ((screen_width/4) + x_offset, 325)
+    screen.blit(subheader_object_right, subheader_rect_right)
+
+    # Fill in the text contents
+    content_object_left = subheader_font.render(content_text_left, True, TEXT_COLOR, MESSAGE_BACKGROUND_COLOR)
+    content_rect_left = content_object_left.get_rect()
+    content_rect_left.center = ((screen_width/4), 600)
+    screen.blit(content_object_left, content_rect_left)
+
+    content_object_right = subheader_font.render(content_text_right, True, TEXT_COLOR, MESSAGE_BACKGROUND_COLOR)
+    content_rect_right = content_object_right.get_rect()
+    content_rect_right.center = ((screen_width/4) + x_offset, 600)
+    screen.blit(content_object_right, content_rect_right)
 
 def display_help_menu(root, screen):
     # Main loop that controls the options page
