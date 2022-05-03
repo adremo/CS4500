@@ -46,8 +46,8 @@ def format_help(root, screen):
     TEXT_COLOR = Color(255, 255, 255)
     HEADER_COLOR = teal
     HEADER_COLOR_HARD = teal
-    SUBHEADER_COLOR_EASY = teal
-    SUBHEADER_COLOR_HARD = teal
+    SUBHEADER_COLOR_LEFT = teal
+    SUBHEADER_COLOR_RIGHT = teal
     MESSAGE_BACKGROUND_COLOR = teal
     ENTRY_BACKGROUND_1 = Color(54, 154, 181)
     ENTRY_BACKGROUND_2 = light_teal
@@ -67,18 +67,22 @@ def format_help(root, screen):
     button_base_y = 475
     background_sub_rect = Rect(50, (screen_height/2) - 500, screen_width - 100, 1000)
     header_zone = Rect(100, 100, screen_width - 200, 150)
-    content_zone = Rect(100, starting_offset, screen_width - 200, 700)
+    #content_zone = Rect(100, starting_offset, screen_width - 200, 700)
+    content_zone_left = Rect(100, starting_offset, (screen_width/2) - 140, 700)
+    content_zone_right = Rect(960, starting_offset, (screen_width/2) - 100, 700)
 
     # Header text
     header_text = "Instructions:"
-    #music_text = "Music:"
-    #sounds_text = "Sounds:"
+    subheader_text_left = "How to Play:"
+    subheader_text_right = "Graphs and Vertex Covers:"
 
     # Setting up the main surfaces
     screen.fill(BACKGROUND_COLOR)
     pygame.draw.rect(screen, SUB_BACKGROUND_COLOR, background_sub_rect)
     pygame.draw.rect(screen, HEADER_COLOR, header_zone)
-    pygame.draw.rect(screen, HEADER_COLOR, content_zone)
+    #pygame.draw.rect(screen, HEADER_COLOR, content_zone)
+    pygame.draw.rect(screen, SUBHEADER_COLOR_LEFT, content_zone_left)
+    pygame.draw.rect(screen, SUBHEADER_COLOR_RIGHT, content_zone_right)
 
     # Fill in the header information
     header_object = header_font.render(header_text, True, TEXT_COLOR, HEADER_COLOR)
