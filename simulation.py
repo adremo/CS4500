@@ -9,8 +9,6 @@
 import sys
 import pygame
 import menu_button
-import scores
-import Graph
 import options
 
 #set up screen
@@ -104,8 +102,8 @@ boat_right_x = screen_width * 0.66
 boat_y = screen_height * 0.55
 
 # Generate buttons and UI images
-travel_button_left = menu_button.Button(screen_width * 0.5, screen_height * 0.85, arrow_right_image)
-travel_button_right = menu_button.Button(screen_width * 0.5, screen_height * 0.85, arrow_left_image)
+travel_button_left = menu_button.Button(screen_width * 0.52, screen_height * 0.83, arrow_right_image, False)
+travel_button_right = menu_button.Button(screen_width * 0.52, screen_height * 0.83, arrow_left_image, False)
 travel_button_left.image = pygame.transform.scale(travel_button_left.image, (int(screen_width * .08), int(screen_height * .12)))
 travel_button_right.image = pygame.transform.scale(travel_button_right.image, (int(screen_width * .08), int(screen_height * .12)))
 river_image = pygame.transform.scale(river_image, (screen_width * 0.42, screen_height))
@@ -142,14 +140,14 @@ def display_UI(turn_count, boat_size, unit_graph, current_conflicts):
     capacity_text = "Boat Capacity: " + str(boat_size)
     capacity_display = font.render(capacity_text, True, white)
     capacity_rect = capacity_display.get_rect()
-    capacity_rect.center = (screen_width * 0.5, screen_height * 0.1)
+    capacity_rect.center = (screen_width * 0.55, screen_height * 0.1)
     screen.blit(capacity_display, capacity_rect)
     
     # Display label for travel button
     travel_text = "Send Boat Across"
     travel_display = font.render(travel_text, True, red)
     travel_rect = travel_display.get_rect()
-    travel_rect.center = (screen_width * 0.54, screen_height * 0.97)
+    travel_rect.center = (screen_width * 0.57, screen_height * 0.95)
     screen.blit(travel_display, travel_rect)
     
     # Display conflicts on left side of screen    
@@ -311,30 +309,54 @@ def run_simulation(game_graph, boat_size):
                         left_side.units.append(unit)
                     else:
                         right_side.units.append(unit) 
-
-        if travel_button_left.draw(screen) and clicked == False:
-            clicked = True
-            # if travel button on bottom is pressed, check to see if there are any animals on boat's current side which will eat each other when boat/farmer leaves
-            current_conflicts = check_unit_conflicts(left_side, right_side, boat.side, unit_graph)
-            if len(current_conflicts) == 0:
-                pygame.mixer.Sound.play(click_sound)
-                
-                if boat.side == 0:
-                    print("Transferring units in boat(" + str(boat.units) + ") to right side of the river")
-                    boat.side = 1
-                    for u in boat.units:
-                        right_side.units.append(u)
-                    boat.units.clear()
-                elif boat.side == 1:
-                    print("Transferring units in boat(" + str(boat.units) + ") to left side of the river")
-                    boat.side = 0
-                    for u in boat.units:
-                        left_side.units.append(u)
-                    boat.units.clear()
-                turn_count += 1
-            else:
-                pygame.mixer.Sound.play(cancel_sound)
-                print("Unit conflict present, cannot transfer boat")
+        if boat.side == 0:
+            if travel_button_left.draw(screen) and clicked == False:
+                clicked = True
+                # if travel button on bottom is pressed, check to see if there are any animals on boat's current side which will eat each other when boat/farmer leaves
+                current_conflicts = check_unit_conflicts(left_side, right_side, boat.side, unit_graph)
+                if len(current_conflicts) == 0:
+                    pygame.mixer.Sound.play(click_sound)
+                    
+                    if boat.side == 0:
+                        print("Transferring units in boat(" + str(boat.units) + ") to right side of the river")
+                        boat.side = 1
+                        for u in boat.units:
+                            right_side.units.append(u)
+                        boat.units.clear()
+                    elif boat.side == 1:
+                        print("Transferring units in boat(" + str(boat.units) + ") to left side of the river")
+                        boat.side = 0
+                        for u in boat.units:
+                            left_side.units.append(u)
+                        boat.units.clear()
+                    turn_count += 1
+                else:
+                    pygame.mixer.Sound.play(cancel_sound)
+                    print("Unit conflict present, cannot transfer boat")
+        else:
+            if travel_button_right.draw(screen) and clicked == False:
+                clicked = True
+                # if travel button on bottom is pressed, check to see if there are any animals on boat's current side which will eat each other when boat/farmer leaves
+                current_conflicts = check_unit_conflicts(left_side, right_side, boat.side, unit_graph)
+                if len(current_conflicts) == 0:
+                    pygame.mixer.Sound.play(click_sound)
+                    
+                    if boat.side == 0:
+                        print("Transferring units in boat(" + str(boat.units) + ") to right side of the river")
+                        boat.side = 1
+                        for u in boat.units:
+                            right_side.units.append(u)
+                        boat.units.clear()
+                    elif boat.side == 1:
+                        print("Transferring units in boat(" + str(boat.units) + ") to left side of the river")
+                        boat.side = 0
+                        for u in boat.units:
+                            left_side.units.append(u)
+                        boat.units.clear()
+                    turn_count += 1
+                else:
+                    pygame.mixer.Sound.play(cancel_sound)
+                    print("Unit conflict present, cannot transfer boat")
                 
         if len(right_side.units) == win_condition:
             print("Game won, all units have reached right side of river.")
