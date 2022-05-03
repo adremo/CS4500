@@ -13,7 +13,7 @@ class Button:
     def __init__(self, x, y, image):
         width = root.winfo_screenwidth()
         height = root.winfo_screenheight()
-        self.image = pygame.transform.scale(image, (int(width * .14), int(height * .08)))
+        self.image = pygame.transform.scale(image, (int(width * .12), int(height * .07)))
         self.rect = self.image.get_rect()
         self.rect.topleft = (x, y)
         self.clicked = False
