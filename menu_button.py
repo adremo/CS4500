@@ -76,7 +76,7 @@ class Back_Button:
     # This class can be used to easily create a "back button." By default, the button will take the appearance of a
     # black arrow, and will appear on the lower-left corner of the screen. If you want to change the default behavior,
     # specify the necessary parameters when creating the button. Note that x and y must be specified together to change the position.
-    def __init__(self, image=None, x=None, y=None, transform_width=.04, transform_height=.04):
+    def __init__(self, image=None, x=None, y=None, transform_width=.05, transform_height=.07):
         width = root.winfo_screenwidth()
         height = root.winfo_screenheight()
         self.clicked = False
@@ -140,7 +140,7 @@ class Custom_Button:
             height = root.winfo_screenheight()
 
             if self.optional_hover_image is not None:
-                self.confirmed_hover_image = pygame.transform.scale(self.optional_hover_image, (int(width * .04), int(height * .06)))
+                self.confirmed_hover_image = pygame.transform.scale(self.optional_hover_image, (int(width * .03), int(height * .048)))
                 surface.blit(self.confirmed_hover_image, (self.rect.x, self.rect.y))
 
             if pygame.mouse.get_pressed()[0] == 1 and self.clicked == False:

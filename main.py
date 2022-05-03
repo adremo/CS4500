@@ -18,6 +18,7 @@ from instructions import display_help_menu
 from leaderboard import display_leaderboard
 from options import display_options_menu, checkSounds, control_sound_volume
 from simulation import run_simulation, check_unit_conflicts
+from high_score_input import get_username
 
 # Main window
 root = tk.Tk()
@@ -146,7 +147,9 @@ while run:
                 
         if turn_count > 0:
             print("Turns used: " + str(turn_count))
-            scores.save_score("easy", "test_name", turn_count)
+            username = get_username(turn_count)
+            pygame.time.wait(400)
+            scores.save_score("easy", username, turn_count)
 
     if hard_button.draw(screen):
         pygame.mixer.Sound.play(click_sound)
@@ -154,8 +157,8 @@ while run:
         graph = Graph.Graph()
         min_boat_size = 0
         conflicts = []
-        while min_boat_size != 2 or conflicts.__len__() < 3:
-            graph.generateGraph(5)
+        while min_boat_size != 3 or conflicts.__len__() < 4:
+            graph.generateGraph(7)
             conflicts = check_unit_conflicts(graph, graph, 0, graph.units)
             print(conflicts)
             min_boat_size = graph.getMinimumBoatSize()
@@ -165,7 +168,9 @@ while run:
         
         if turn_count > 0:
             print("Turns used: " + str(turn_count))
-            scores.save_score("hard", "test_name", turn_count)
+            username = get_username(turn_count)
+            pygame.time.wait(400)
+            scores.save_score("hard", username, turn_count)
 
     if options_button.draw(screen):
         pygame.mixer.Sound.play(click_sound)

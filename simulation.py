@@ -98,9 +98,9 @@ unit_images = {"Fox": fox_icon,
 screen_width = screen.get_width()
 screen_height = screen.get_height()
 left_side_x = screen_width * 0.25
-right_side_x = screen_width * 0.75
+right_side_x = screen_width * 0.85
 boat_left_x = screen_width * 0.34
-boat_right_x = screen_width * 0.68
+boat_right_x = screen_width * 0.66
 boat_y = screen_height * 0.55
 
 # Generate buttons and UI images
@@ -211,11 +211,12 @@ def check_unit_conflicts(left_side, right_side, side, unit_graph):
 
 # Game simulation function, contains main game simulation loop, returns turns used after game is won
 def run_simulation(game_graph, boat_size):
-    volume = options.control_sound_volume(0.6)
-    pygame.mixer.Sound.set_volume(click_sound, volume)
-    pygame.mixer.Sound.set_volume(victory_sound, volume)
-    pygame.mixer.Sound.set_volume(cancel_sound, volume)
-    pygame.mixer.Sound.set_volume(water_sound, volume)
+    volume_6 = options.control_sound_volume(0.6)
+    volume_5 = options.control_sound_volume(0.5)
+    pygame.mixer.Sound.set_volume(click_sound, volume_6)
+    pygame.mixer.Sound.set_volume(victory_sound, volume_6)
+    pygame.mixer.Sound.set_volume(cancel_sound, volume_5)
+    pygame.mixer.Sound.set_volume(water_sound, volume_5)
     
     unit_graph = game_graph
     
@@ -262,9 +263,9 @@ def run_simulation(game_graph, boat_size):
         boat_count = 0
         for unit in boat.units:
             if boat.side == 0:
-                boat_button = menu_button.Unit_Button(unit, screen_width * 0.37, screen_height * (0.5 + (boat_count / 11)), unit_images[unit])
+                boat_button = menu_button.Unit_Button(unit, screen_width * 0.38, screen_height * (0.5 + (boat_count / 11)), unit_images[unit])
             else:
-                boat_button = menu_button.Unit_Button(unit, screen_width * 0.71, screen_height * (0.5 + (boat_count / 11)), unit_images[unit])
+                boat_button = menu_button.Unit_Button(unit, screen_width * 0.7, screen_height * (0.5 + (boat_count / 11)), unit_images[unit])
             unit_buttons_boat[unit] = (boat_button)
             boat_count += 1
 

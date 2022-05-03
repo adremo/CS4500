@@ -186,10 +186,10 @@ def format_options(root, screen, options):
     sounds_status_rect.center = (screen_width/2, screen_height/2.1)
     screen.blit(sounds_status_object, sounds_status_rect)
 
-    right_sound_button_unticked = menu_button.Custom_Button(screen_width/1.9, screen_height/2.2, box_unticked, box_unticked_hovered, 0.04, 0.06)
-    right_sound_button_ticked = menu_button.Custom_Button(screen_width/1.9, screen_height/2.2, box_ticked, box_ticked_hovered, 0.04, 0.06)
-    right_music_button_unticked = menu_button.Custom_Button(screen_width/1.9, screen_height/2.75, box_unticked, box_unticked_hovered, 0.04, 0.06)
-    right_music_button_ticked = menu_button.Custom_Button(screen_width/1.9, screen_height/2.75, box_ticked, box_ticked_hovered, 0.04, 0.06)
+    right_sound_button_unticked = menu_button.Custom_Button(screen_width/1.9, screen_height/2.2, box_unticked, box_unticked_hovered, 0.03, 0.048)
+    right_sound_button_ticked = menu_button.Custom_Button(screen_width/1.9, screen_height/2.2, box_ticked, box_ticked_hovered, 0.03, 0.048)
+    right_music_button_unticked = menu_button.Custom_Button(screen_width/1.9, screen_height/2.75, box_unticked, box_unticked_hovered, 0.03, 0.048)
+    right_music_button_ticked = menu_button.Custom_Button(screen_width/1.9, screen_height/2.75, box_ticked, box_ticked_hovered, 0.03, 0.048)
 
     # Menu Noises
     click_sound = pygame.mixer.Sound(r'Sounds/click_sound.wav')
