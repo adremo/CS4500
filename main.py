@@ -50,7 +50,7 @@ wave_offset_increment = 2.0
 base_y = water_box_start_y - (75 * amplitude)
 water_box_rect = Rect(water_start_x, water_box_start_y, water_width, water_box_height)
 title_location_x = screen_width * .22
-title_location_y = screen_height * .04
+title_location_y = screen_height * .05
 title_width = screen_width * .59
 title_height = screen_height * .18
 grass_location1_x = screen_width * .1
@@ -59,12 +59,12 @@ grass_location2_x = screen_width * .27
 grass_location2_y = screen_height * .46
 grass_location3_x = screen_width * .78
 grass_location3_y = screen_height * .34
-menu_button_image_location_x = screen_width * .43
-easy_button_image_location_y = screen_height * .22
-hard_button_image_location_y = screen_height * .31
-options_button_image_location_y = screen_height * .40
-instructions_button_image_location_y = screen_height * .49
-leaderboard_button_image_location_y = screen_height * .58
+menu_button_image_location_x = screen_width * .44
+easy_button_image_location_y = screen_height * .28
+hard_button_image_location_y = screen_height * .36
+options_button_image_location_y = screen_height * .44
+instructions_button_image_location_y = screen_height * .52
+leaderboard_button_image_location_y = screen_height * .60
 
 
 def close():

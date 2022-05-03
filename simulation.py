@@ -262,9 +262,9 @@ def run_simulation(game_graph, boat_size):
         boat_count = 0
         for unit in boat.units:
             if boat.side == 0:
-                boat_button = menu_button.Unit_Button(unit, screen_width * 0.34, screen_height * (0.5 + (boat_count / 11)), unit_images[unit])
+                boat_button = menu_button.Unit_Button(unit, screen_width * 0.37, screen_height * (0.5 + (boat_count / 11)), unit_images[unit])
             else:
-                boat_button = menu_button.Unit_Button(unit, screen_width * 0.68, screen_height * (0.5 + (boat_count / 11)), unit_images[unit])
+                boat_button = menu_button.Unit_Button(unit, screen_width * 0.71, screen_height * (0.5 + (boat_count / 11)), unit_images[unit])
             unit_buttons_boat[unit] = (boat_button)
             boat_count += 1
 
