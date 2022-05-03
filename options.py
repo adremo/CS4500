@@ -134,18 +134,11 @@ def format_options(root, screen, options):
     entry_font = pygame.font.SysFont(None, 40)
 
     # Surface building and positioning
-    button_offset = 100
-    y_offset = 50
-    starting_offset = 165 + (y_offset * 2.5)
     screen_width = root.winfo_screenwidth()
     screen_height = root.winfo_screenheight() 
-    button_base_x = (screen_width/3) + 200
-    button_base_y = 475
-    background_sub_rect = Rect(50, (screen_height/2) - 500, screen_width - 100, 1000)
-    header_zone = Rect(100, 100, screen_width - 200, 150)
-    content_zone = Rect(100, starting_offset, screen_width - 200, 700)
-    subheader_zone_easy = Rect(100, 210, (screen_width/2) - 200, 70)
-    subheader_zone_hard = Rect(1000, 210, (screen_width/2) - 150, 70)
+    background_sub_rect = Rect(screen_width/15, screen_height/15, screen_width - (screen_width/7.5), screen_height - (screen_height/5))
+    header_zone = Rect(screen_width/11, screen_height/11, screen_width - (screen_width/5.5), screen_height - (screen_height/1.15))
+    content_zone = Rect(screen_width/11, screen_height/4, screen_width - (screen_width/5.5), screen_height/1.8)
 
     # Header text
     header_text = "Options"
@@ -157,28 +150,25 @@ def format_options(root, screen, options):
     pygame.draw.rect(screen, SUB_BACKGROUND_COLOR, background_sub_rect)
     pygame.draw.rect(screen, HEADER_COLOR, header_zone)
     pygame.draw.rect(screen, HEADER_COLOR, content_zone)
-    #pygame.draw.rect(screen, SUBHEADER_COLOR_EASY, subheader_zone_easy)
-    #pygame.draw.rect(screen, SUBHEADER_COLOR_HARD, subheader_zone_hard)
+
 
     # Fill in the header information
     header_object = header_font.render(header_text, True, TEXT_COLOR, HEADER_COLOR)
     header_rect = header_object.get_rect()
-    header_rect.center = ((screen_width/2), 175)
+    header_rect.center = ((screen_width/2), screen_height/6.5)
     screen.blit(header_object, header_rect)
 
     # Fill in the options menu contents
     music_object = subheader_font.render(music_text, True, TEXT_COLOR, black)
     music_rect = music_object.get_rect()
-    music_rect.center = ((screen_width/2.5), screen_height/2.35)
+    music_rect.center = ((screen_width/2.3), screen_height/2.55)
     screen.blit(music_object, music_rect)
 
     sounds_object = subheader_font.render(sounds_text, True, TEXT_COLOR, black)
     sounds_rect = sounds_object.get_rect()
-    sounds_rect.center = ((screen_width/2.5), screen_height/2)
+    sounds_rect.center = ((screen_width/2.3), screen_height/2.1)
     screen.blit(sounds_object, sounds_rect)
 
-    #arrow_right = pygame.image.load(r'Images/arrow_right_icon.png')
-    #arrow_left = pygame.image.load(r'Images/arrow_left_icon.png')
     box_unticked = pygame.image.load(r'Images/Box_unticked.png')
     box_ticked = pygame.image.load(r'Images/Box_ticked.png')
     box_unticked_hovered = pygame.image.load(r'Images/Box_unticked_hovered.png')
@@ -187,53 +177,24 @@ def format_options(root, screen, options):
     # Music status plates
     music_status_object = get_music_status(black)
     music_status_rect = music_status_object.get_rect()
-    music_status_rect.center = (button_base_x + 140, button_base_y + 30)
+    music_status_rect.center = (screen_width/2, screen_height/2.55)
     screen.blit(music_status_object, music_status_rect)
 
     # Sound status plates
     sounds_status_object = get_sound_status(black)
     sounds_status_rect = sounds_status_object.get_rect()
-    sounds_status_rect.center = (button_base_x + 140, button_base_y + button_offset + 30)
+    sounds_status_rect.center = (screen_width/2, screen_height/2.1)
     screen.blit(sounds_status_object, sounds_status_rect)
 
-    # Buttons for muting the sounds
-    #left_music_button = menu_button.Custom_Button(x=button_base_x, y=button_base_y, image=arrow_left)
-    #right_music_button = menu_button.Custom_Button(x=button_base_x + 200, y=button_base_y, image=arrow_right)
-    #left_sound_button = menu_button.Custom_Button(x=button_base_x, y=button_base_y + button_offset, image=arrow_left)
-    #right_sound_button = menu_button.Custom_Button(x=button_base_x + 200, y=button_base_y + button_offset, image=arrow_right)
-    right_sound_button_unticked = menu_button.Custom_Button(button_base_x + 200, button_base_y + button_offset, box_unticked, box_unticked_hovered, 0.04, 0.06)
-    right_sound_button_ticked = menu_button.Custom_Button(button_base_x + 200, button_base_y + button_offset, box_ticked, box_ticked_hovered, 0.04, 0.06)
-    right_music_button_unticked = menu_button.Custom_Button(button_base_x + 200, button_base_y, box_unticked, box_unticked_hovered, 0.04, 0.06)
-    right_music_button_ticked = menu_button.Custom_Button(button_base_x + 200, button_base_y, box_ticked, box_ticked_hovered, 0.04, 0.06)
+    right_sound_button_unticked = menu_button.Custom_Button(screen_width/1.9, screen_height/2.2, box_unticked, box_unticked_hovered, 0.04, 0.06)
+    right_sound_button_ticked = menu_button.Custom_Button(screen_width/1.9, screen_height/2.2, box_ticked, box_ticked_hovered, 0.04, 0.06)
+    right_music_button_unticked = menu_button.Custom_Button(screen_width/1.9, screen_height/2.75, box_unticked, box_unticked_hovered, 0.04, 0.06)
+    right_music_button_ticked = menu_button.Custom_Button(screen_width/1.9, screen_height/2.75, box_ticked, box_ticked_hovered, 0.04, 0.06)
 
     # Menu Noises
     click_sound = pygame.mixer.Sound(r'Sounds/click_sound.wav')
     volume = control_sound_volume(0.5)
     pygame.mixer.Sound.set_volume(click_sound, volume)
-
-    #if left_music_button.draw_custom_button(screen):
-    #    toggle_volume_music()
-    #    pygame.mixer.Sound.play(click_sound)
-    #    pygame.time.wait(200)
-    
-    #if right_music_button.draw_custom_button(screen):
-    #    toggle_volume_music()
-    #    pygame.mixer.Sound.play(click_sound)
-    #    pygame.time.wait(200)
-
-    #if left_sound_button.draw_custom_button(screen):
-    #    toggle_volume_sound()
-    #    volume = control_sound_volume(0.5)
-    #    pygame.mixer.Sound.set_volume(click_sound, volume)
-    #    pygame.mixer.Sound.play(click_sound)
-    #    pygame.time.wait(200)
-    
-    #if right_sound_button.draw_custom_button(screen):
-    #    toggle_volume_sound()
-    #    volume = control_sound_volume(0.5)
-    #    pygame.mixer.Sound.set_volume(click_sound, volume)
-    #    pygame.mixer.Sound.play(click_sound)
-    #    pygame.time.wait(200)
     
     options = checkSounds()
     if options["sounds"] == False:
@@ -291,7 +252,7 @@ def display_options_menu(root, screen, options):
         # Back to main menu button
         width = root.winfo_screenwidth()
         height = root.winfo_screenheight()
-        main_menu_button = menu_button.Back_Button(x=width * 0.07, y=height * 0.85)
+        main_menu_button = menu_button.Back_Button(x=width * 0.07, y=height * 0.9)
         
         if main_menu_button.draw_back_button(screen):
             pygame.mixer.Sound.play(click_sound)
