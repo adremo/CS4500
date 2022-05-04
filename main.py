@@ -40,8 +40,8 @@ i = 0
 two_pi = 2.0 * math.pi
 screen_width = root.winfo_screenwidth()
 screen_height = root.winfo_screenheight()
-waterBottom = screen_height / 2
-waterBottom2 = screen_height / 3
+waterBottom = screen_height / 3
+waterBottom2 = screen_height / 4
 water_start_x = 0
 water_width = screen_width
 water_box_start_y = screen_height
@@ -130,9 +130,7 @@ while run:
 
     if easy_button.draw(screen):
         pygame.mixer.Sound.play(click_sound)
-        
-        #unit_count = user_input.get_unit_count()
-        
+                
         graph = Graph.Graph()
         min_boat_size = 0
         conflicts = []
