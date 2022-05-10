@@ -93,6 +93,46 @@ class TestSaveScore(unittest.TestCase):
         actual_number_of_saves = len(test_data["scores"])
         self.assertEqual(expected_number_of_saves, actual_number_of_saves)
     
+    def testDuplicateNameBetterScoreEasy(self):
+        """
+        If a .json file containing at least 1 entry of data is present and a third entry with an overlapping name 
+        is saved with a better score (the entry should be edited with the new score)
+        """
+        delete_files()
+        save_score(difficulty=EASY_DIFFICULTY, new_name=NAME_2, new_score=1)
+        save_score(difficulty=EASY_DIFFICULTY, new_name=NAME_1, new_score=SCORE)
+        save_score(difficulty=EASY_DIFFICULTY, new_name=NAME_1, new_score=BETTER_SCORE)
+        test_data = load_scores(difficulty=EASY_DIFFICULTY)
+
+        actual_name = test_data["scores"][-1][0]["name"]
+        actual_score = test_data["scores"][-1][0]["score"]
+        self.assertEqual(NAME_1, actual_name)
+        self.assertEqual(BETTER_SCORE, actual_score)
+
+        expected_number_of_saves = 2
+        actual_number_of_saves = len(test_data["scores"])
+        self.assertEqual(expected_number_of_saves, actual_number_of_saves)
+    
+    def testDuplicateNameWorseScoreEasy(self):
+        """
+        If a .json file containing at least 1 entry of data is present and a third entry with an overlapping name 
+        is saved with a worse score (nothing should happen and no new data should be saved)
+        """
+        delete_files()
+        save_score(difficulty=EASY_DIFFICULTY, new_name=NAME_2, new_score=1)
+        save_score(difficulty=EASY_DIFFICULTY, new_name=NAME_1, new_score=SCORE)
+        save_score(difficulty=EASY_DIFFICULTY, new_name=NAME_1, new_score=WORSE_SCORE)
+        test_data = load_scores(difficulty=EASY_DIFFICULTY)
+
+        actual_name = test_data["scores"][-1][0]["name"]
+        actual_score = test_data["scores"][-1][0]["score"]
+        self.assertEqual(NAME_1, actual_name)
+        self.assertEqual(SCORE, actual_score)
+
+        expected_number_of_saves = 2
+        actual_number_of_saves = len(test_data["scores"])
+        self.assertEqual(expected_number_of_saves, actual_number_of_saves)
+    
     # Tests for "hard" difficulty
     def testFileCreationHard(self):
         """If no .json file is present, one is created and data is saved to it"""
@@ -136,6 +176,46 @@ class TestSaveScore(unittest.TestCase):
         self.assertEqual(NAME_1, actual_name)
         self.assertEqual(SCORE, actual_score)
         
+        expected_number_of_saves = 2
+        actual_number_of_saves = len(test_data["scores"])
+        self.assertEqual(expected_number_of_saves, actual_number_of_saves)
+    
+    def testDuplicateNameBetterScoreHard(self):
+        """
+        If a .json file containing at least 1 entry of data is present and a third entry with an overlapping name 
+        is saved with a better score (the entry should be edited with the new score)
+        """
+        delete_files()
+        save_score(difficulty=HARD_DIFFICULTY, new_name=NAME_2, new_score=1)
+        save_score(difficulty=HARD_DIFFICULTY, new_name=NAME_1, new_score=SCORE)
+        save_score(difficulty=HARD_DIFFICULTY, new_name=NAME_1, new_score=BETTER_SCORE)
+        test_data = load_scores(difficulty=HARD_DIFFICULTY)
+
+        actual_name = test_data["scores"][-1][0]["name"]
+        actual_score = test_data["scores"][-1][0]["score"]
+        self.assertEqual(NAME_1, actual_name)
+        self.assertEqual(BETTER_SCORE, actual_score)
+
+        expected_number_of_saves = 2
+        actual_number_of_saves = len(test_data["scores"])
+        self.assertEqual(expected_number_of_saves, actual_number_of_saves)
+    
+    def testDuplicateNameWorseScoreHard(self):
+        """
+        If a .json file containing at least 1 entry of data is present and a third entry with an overlapping name 
+        is saved with a worse score (nothing should happen and no new data should be saved)
+        """
+        delete_files()
+        save_score(difficulty=HARD_DIFFICULTY, new_name=NAME_2, new_score=1)
+        save_score(difficulty=HARD_DIFFICULTY, new_name=NAME_1, new_score=SCORE)
+        save_score(difficulty=HARD_DIFFICULTY, new_name=NAME_1, new_score=WORSE_SCORE)
+        test_data = load_scores(difficulty=HARD_DIFFICULTY)
+
+        actual_name = test_data["scores"][-1][0]["name"]
+        actual_score = test_data["scores"][-1][0]["score"]
+        self.assertEqual(NAME_1, actual_name)
+        self.assertEqual(SCORE, actual_score)
+
         expected_number_of_saves = 2
         actual_number_of_saves = len(test_data["scores"])
         self.assertEqual(expected_number_of_saves, actual_number_of_saves)
