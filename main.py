@@ -1,9 +1,23 @@
+# Michael Schweighauser, Andrew Morris, Tiana Madison
+# 4/3/2022
+# CS 4500 Spring 2022
+# Main menu screen displays graphics and plays sounds, various buttons allow user to 
+# access the different parts of the game. Gets sound settings and begins music playback,
+# sets up the game simulation and calls function to run it using game graph input, and 
+# takes the user's score form simulation and input username recieved from high_score_input
+# to update the high scores file.
+# External Files: Sounds and images used in the 'Sounds' and 'Images' sections
+# Central Data Structures: None
+
 # Sound Sources: 
 # game_music: https://freesound.org/people/FoolBoyMedia/sounds/257997/
 # click_sound: https://freesound.org/people/brandondelehoy/sounds/333428/
 # victory_sound: https://freesound.org/people/Eponn/sounds/619832/
 # cancel_sound: https://freesound.org/people/plasterbrain/sounds/423167/
 # water sound: https://freesound.org/people/thorvandahl/sounds/184200/
+
+# Artwork by Michael Schweighauser (Main Menu) and Alex Chalmers (Game Unit images)
+# Additional menu design by Tiana Madison
 
 import tkinter as tk
 import sys
@@ -69,8 +83,8 @@ leaderboard_button_image_location_y = screen_height * .60
 
 
 def close():
-    root.withdraw()  # if you want to bring it back
-    sys.exit()  # if you want to exit the entire thing
+    root.withdraw()
+    sys.exit()
 
 
 def handleEvents():
@@ -79,9 +93,10 @@ def handleEvents():
             running = False
         elif event.type == pygame.KEYDOWN:
             if event.key == pygame.K_ESCAPE:
-                sys.exit() # not sure how necessary/bad this is but I had to use it for game to close properly
+                sys.exit()
                 running = False
 
+# Sounds
 # Game Music, loop by setting -1 as the .play() 'loops' param
 pygame.mixer.music.load(r'Sounds/game_music.wav')
 sound_options = checkSounds()
@@ -90,6 +105,8 @@ if sound_options["music"] == False:
 else:
     pygame.mixer.music.set_volume(0.7)
 pygame.mixer.music.play(-1)
+# Menu Noises
+click_sound = pygame.mixer.Sound(r'Sounds/click_sound.wav')
 
 # Images
 title_image = pygame.image.load(r'Images/River_Crossing_Title.png').convert_alpha()
@@ -101,9 +118,6 @@ options_image = pygame.image.load(r'Images/Options_Button.png').convert_alpha()
 instructions_image = pygame.image.load(r'Images/Instructions_Button.png').convert_alpha()
 leaderboard_image = pygame.image.load(r'Images/Leaderboard_Button.png').convert_alpha()
 
-# Menu Noises
-click_sound = pygame.mixer.Sound(r'Sounds/click_sound.wav')
-
 # Buttons
 easy_button = menu_button.Button(menu_button_image_location_x, easy_button_image_location_y, easy_image)
 hard_button = menu_button.Button(menu_button_image_location_x, hard_button_image_location_y, hard_image)
@@ -112,7 +126,9 @@ instructions_button = menu_button.Button(menu_button_image_location_x, instructi
                                          instructions_image)
 leaderboard_button = menu_button.Button(menu_button_image_location_x, leaderboard_button_image_location_y, leaderboard_image)
 
-# The Main Menu Loop
+# Main Menu Loop, dynamically displays graphics and plays feedback sounds, user buttons displayed below
+# the game's title are as follows: Easy and Hard launch game simulations of the respective difficulty, 
+# Options, Instructions, and Leaderboard display the respective page.
 run = True
 while run:
     sound_options = checkSounds() # Check the external sound option values
@@ -122,6 +138,7 @@ while run:
 
     screen.fill(green)
     pygame.draw.rect(screen, blue, water_box_rect)
+    
     # Title Location
     screen.blit(title_image, (title_location_x, title_location_y))
     screen.blit(grass_image, (grass_location1_x, grass_location1_y))

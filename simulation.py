@@ -1,4 +1,15 @@
 # Andrew Morris
+# 4/4/2022
+# CS 4500 Spring 2022
+# Game simulation takes in a game graph as input, sets up images corresponding to the units
+# in the input game graph, and creates buttons using possible locations for those images. These 
+# buttons move dynamically based on the state of the boat and the current game state. User's goal
+# is to get all of the units to the right side of the river, and once this goal is reached game is
+# won and the simulation returns the final turn count as their score. The user can also exit the
+# simulation by pressing the Escape key and no highscore will be saved.
+# Central Data Structure: Dictionaries, Lists
+# External Files: Sound and image files listed below in 'Sounds' and 'Images' sections. Call to 
+# options.py function to get sound settings will access the settings in the 'options.json' file
 
 # Sound Sources: 
 # game_music: https://freesound.org/people/FoolBoyMedia/sounds/257997/
@@ -6,6 +17,8 @@
 # victory_sound: https://freesound.org/people/Eponn/sounds/619832/
 # cancel_sound: https://freesound.org/people/plasterbrain/sounds/423167/
 # water sound: https://freesound.org/people/thorvandahl/sounds/184200/
+
+# Artwork by Alex Chalmers and Andrew Morris(background image)
 
 import sys
 import pygame
@@ -208,7 +221,8 @@ def check_unit_conflicts(left_side, right_side, side, unit_graph):
 
     return current_conflicts
 
-# Game simulation function, contains main game simulation loop, returns turns used after game is won
+# Game simulation function, contains main game simulation loop, returns turn count if game is won, or -1 if the
+# user exits prematurely, which should be checked for in main menu function to prevent a score from being saved.
 def run_simulation(game_graph, boat_size):
     volume_6 = options.control_sound_volume(0.6)
     volume_5 = options.control_sound_volume(0.5)
@@ -236,7 +250,8 @@ def run_simulation(game_graph, boat_size):
 
     for unit in unit_graph:
         left_side.units.append(unit)
-    print(unit_graph)    
+    print(unit_graph)
+    
     # Main Simulation loop: runs until win condition is met(# of units on right side of river is equal to # in units graph)
     run = True
     while run:
@@ -268,7 +283,7 @@ def run_simulation(game_graph, boat_size):
             unit_buttons_boat[unit] = (boat_button)
             boat_count += 1
 
-        # Handle pygame events
+        # Handle pygame events, mainly for user exiting the simulation in this case
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 sys.exit()
@@ -335,9 +350,9 @@ def run_simulation(game_graph, boat_size):
                     pygame.mixer.Sound.play(cancel_sound)
                     print("Unit conflict present, cannot transfer boat")
         else:
+            # Additional check using arrow graphic in opposite direction
             if travel_button_right.draw(screen) and clicked == False:
                 clicked = True
-                # if travel button on bottom is pressed, check to see if there are any animals on boat's current side which will eat each other when boat/farmer leaves
                 current_conflicts = check_unit_conflicts(left_side, right_side, boat.side, unit_graph)
                 if len(current_conflicts) == 0:
                     pygame.mixer.Sound.play(click_sound)
@@ -358,7 +373,8 @@ def run_simulation(game_graph, boat_size):
                 else:
                     pygame.mixer.Sound.play(cancel_sound)
                     print("Unit conflict present, cannot transfer boat")
-                
+        
+        # Win condition can be checked for simply by comparing number of units on right with total units
         if len(right_side.units) == win_condition:
             print("Game won, all units have reached right side of river.")
             pygame.mixer.Sound.stop(water_sound)

@@ -1,4 +1,9 @@
+# Andrew Morris
+# 4/20/2022
+# CS 4500 Spring 2022
 # Unit tests for simulation.py
+# Central Data Structures: Dictionaries used for testing simulation
+# External Files: None
 
 import unittest
 from simulation import *
