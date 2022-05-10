@@ -173,7 +173,7 @@ def display_help_menu(root, screen):
         # Back to main menu button
         width = root.winfo_screenwidth()
         height = root.winfo_screenheight()
-        main_menu_button = menu_button.Back_Button(x=width * 0.07, y=height * 0.85)
+        main_menu_button = menu_button.Back_Button(x=width * 0.07, y=height * 0.9)
         
         if main_menu_button.draw_back_button(screen):
             pygame.mixer.Sound.play(click_sound)

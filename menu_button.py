@@ -10,13 +10,14 @@ offset = 0.0
 
 
 class Button:
-    def __init__(self, x, y, image):
+    def __init__(self, x, y, image, hover=True):
         width = root.winfo_screenwidth()
         height = root.winfo_screenheight()
         self.image = pygame.transform.scale(image, (int(width * .12), int(height * .07)))
         self.rect = self.image.get_rect()
         self.rect.topleft = (x, y)
         self.clicked = False
+        self.hover = hover
 
     def draw(self, surface):
         action = False
@@ -25,9 +26,14 @@ class Button:
         if self.rect.collidepoint(pos):
             width = root.winfo_screenwidth()
             height = root.winfo_screenheight()
-            menu_boat_image = pygame.image.load(r'Images/Menu_Boat.png').convert_alpha()
-            menu_boat_image = pygame.transform.scale(menu_boat_image, (width * .08, height * .072))
-            surface.blit(menu_boat_image, (self.rect.x * .8, self.rect.y))
+            if self.hover == True:
+                menu_boat_image = pygame.image.load(r'Images/Menu_Boat.png').convert_alpha()
+                menu_boat_image = pygame.transform.scale(menu_boat_image, (width * .08, height * .072))
+                surface.blit(menu_boat_image, (self.rect.x * .8, self.rect.y))
+            else:
+                menu_boat_image = pygame.image.load(r'Images/Menu_Boat.png').convert_alpha()
+                menu_boat_image = pygame.transform.scale(menu_boat_image, (width * .06, height * .05))
+                surface.blit(menu_boat_image, (self.rect.x * .9, self.rect.y * 1.04))
 
             if pygame.mouse.get_pressed()[0] == 1 and self.clicked == False:
                 print('clicked')
@@ -46,7 +52,7 @@ class Unit_Button:
         width = root.winfo_screenwidth()
         height = root.winfo_screenheight()
         self.name = name
-        self.image = pygame.transform.scale(image, (int(width * .06), int(height * .09)))
+        self.image = pygame.transform.scale(image, (int(width * .05), int(height * .08)))
         self.rect = self.image.get_rect()
         self.rect.topleft = (x, y)
         self.clicked = False
@@ -76,7 +82,7 @@ class Back_Button:
     # This class can be used to easily create a "back button." By default, the button will take the appearance of a
     # black arrow, and will appear on the lower-left corner of the screen. If you want to change the default behavior,
     # specify the necessary parameters when creating the button. Note that x and y must be specified together to change the position.
-    def __init__(self, image=None, x=None, y=None, transform_width=.04, transform_height=.04):
+    def __init__(self, image=None, x=None, y=None, transform_width=.05, transform_height=.07):
         width = root.winfo_screenwidth()
         height = root.winfo_screenheight()
         self.clicked = False
@@ -140,7 +146,7 @@ class Custom_Button:
             height = root.winfo_screenheight()
 
             if self.optional_hover_image is not None:
-                self.confirmed_hover_image = pygame.transform.scale(self.optional_hover_image, (int(width * .04), int(height * .06)))
+                self.confirmed_hover_image = pygame.transform.scale(self.optional_hover_image, (int(width * .03), int(height * .048)))
                 surface.blit(self.confirmed_hover_image, (self.rect.x, self.rect.y))
 
             if pygame.mouse.get_pressed()[0] == 1 and self.clicked == False:
